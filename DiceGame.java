@@ -1,3 +1,74 @@
+import java.util.*;
+
 public class DiceGame {
 
+    private List<Dice> diceSet = new ArrayList<>();
+    private int scoreToWin;
+    private final Scanner scanner = new Scanner(System.in);
+
+    public DiceGame(){
+        for (int i = 1; i <= 6; i++) {
+            diceSet.add(new Dice());
+        }
+        scoreToWin = 1500;
+    }
+
+    private String getRules(){
+        return """
+                ************************
+                Rules for the Dice game:
+                Two players throw 6 dice each and aim to earn points through different combinations.
+                You can rethrow some or all of your dice once each round.
+                First to reach 1500 pts (can be adjusted) wins.
+                ⚀⚀⚀ = 1000 pts
+                ⚁⚁⚁ = 200 pts
+                ⚂⚂⚂ = 300 pts
+                ⚃⚃⚃ = 400 pts
+                ⚄⚄⚄ = 500 pts
+                ⚅⚅⚅ = 600 pts
+                Each additional die after 3 in a row doubles the points earned.
+                ⚁⚁⚁⚁ = 400 pts
+                ⚁⚁⚁⚁⚁ = 800 pts
+                ⚁⚁⚁⚁⚁⚁ = 1600 pts
+                ONE and FIVE always give points.
+                ⚀ = 100 pts
+                ⚄ = 50 pts
+                Additionally there are other scoring combinations.
+                ⚀⚁⚂⚃⚄ = 500 pts
+                ⚁⚂⚃⚄⚅ = 750 pts
+                ⚀⚁⚂⚃⚄⚅ = 1500 pts
+                Good luck!
+                ************************
+                """;
+    }
+
+    public void gameMenu(){
+        int choice;
+        while(true) {
+            choice = 0;
+            System.out.println("""
+                    [1] Play Game
+                    [2] Rules
+                    [3] Options
+                    [4] Exit
+                    """);
+            while(choice < 1 || choice > 4){
+                System.out.print("Your selection: ");
+                try {
+                    choice = scanner.nextInt();
+                    scanner.nextLine();
+                }catch(InputMismatchException e){
+                    scanner.nextLine();
+                }
+            }
+            switch (choice) {
+                case 1 -> System.out.println("Placeholder");
+                case 2 -> System.out.println(getRules());
+                case 3 -> System.out.println("Placeholder2");
+                case 4 -> {
+                    return;
+                }
+            }
+        }
+    }
 }
