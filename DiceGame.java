@@ -45,8 +45,7 @@ public class DiceGame {
 
         while (player1.getScore() <= scoreToWin && player2.getScore() <= scoreToWin){
 
-            System.out.println(currentPlayer.getName() + "'s turn!");
-            System.out.println("Type 'roll' to throw your dice!");
+            System.out.println(currentPlayer.getName() + "'s turn! Type 'roll' to throw your dice!");
             String answer = "";
             answer = scanner.nextLine();
             while(!answer.equalsIgnoreCase("roll")){
@@ -194,6 +193,7 @@ public class DiceGame {
             System.out.print(dice + " ");
         }
         System.out.println();
+        Thread.sleep(500);
     }
 
     public void throwAllDice() {
