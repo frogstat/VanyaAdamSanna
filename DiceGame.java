@@ -202,4 +202,40 @@ public class DiceGame {
         }
         diceSet.sort(Comparator.comparing(Dice::getDiceSide));
     }
+
+    public void rethrow() {
+        System.out.println("Do you wish to rethrow any dice? Answer y/n: ");
+        String askRethrow = "";
+        while(!askRethrow.equalsIgnoreCase("n") || !askRethrow.equalsIgnoreCase("y")) {
+            askRethrow = scanner.nextLine();
+        }
+        if (askRethrow.equalsIgnoreCase("n")) {
+            return;
+        }
+        System.out.print("Type 0 when you're done. Select dice to rethrow: ");
+        while(true){
+            int choosingDice;
+            choosingDice = inputInt();
+            if(choosingDice == 0){
+                break;
+            }
+            if (choosingDice < 1 || choosingDice > 6){
+                continue;
+            }
+
+           List<Dice> diceToRethrow = new ArrayList<>();
+            if(!diceToRethrow.contains(diceSet.get(choosingDice-1))){
+                diceToRethrow.add(diceSet.get(choosingDice-1));
+                System.out.println("Added " + choosingDice + " to rethrow list");
+            }
+            else {
+                diceToRethrow.remove(diceSet.get(choosingDice-1));
+                System.out.println("Removed " + choosingDice + " from rethrow list");
+            }
+
+
+
+
+        }
+    }
 }
