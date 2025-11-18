@@ -124,44 +124,30 @@ public class DiceGame {
         }
     }
 
-    private String isStraight(){
-        if(diceSet.contains(new Dice(DiceSides.ONE))
-                && diceSet.contains(new Dice(DiceSides.TWO))
-                && diceSet.contains(new Dice(DiceSides.THREE))
-                && diceSet.contains(new Dice(DiceSides.FOUR))
-                && diceSet.contains(new Dice(DiceSides.FIVE))){
-            if(diceSet.contains(new Dice(DiceSides.SIX))){
-                return "Flush";
+    private boolean hasStraight(List<DiceSides> sidesToLookFor){
+        for(DiceSides diceSide : sidesToLookFor) {
+            if(diceSet.stream().noneMatch(d -> d.getDiceSide() == diceSide)){
+                return false;
             }
-            return "Short Straight";
         }
-        else if (diceSet.contains(new Dice(DiceSides.TWO))
-                && diceSet.contains(new Dice(DiceSides.THREE))
-                && diceSet.contains(new Dice(DiceSides.FOUR))
-                && diceSet.contains(new Dice(DiceSides.FIVE))
-                && diceSet.contains(new Dice(DiceSides.SIX))) {
-            return "Long Straight";
-        }
-        return "none";
+        return true;
     }
 
 
 
     private void checkResult(Player currentPlayer){
-        if(isStraight().equals("Flush")){
+        if(hasStraight(List.of(DiceSides.ONE,DiceSides.TWO,DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE, DiceSides.SIX))){
             currentPlayer.addScore(1500);
             System.out.println("Flush! 1500 pts!");
         }
-        else if(isStraight().equals("Long Straight")){
+        else if(hasStraight(List.of(DiceSides.TWO,DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE, DiceSides.SIX))){
             currentPlayer.addScore(750);
             System.out.println("Long Straight!! 750 pts!");
         }
-        else if(isStraight().equals("Short Straight")){
+        else if(hasStraight(List.of(DiceSides.ONE,DiceSides.TWO,DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE))){
             currentPlayer.addScore(500);
             System.out.println("Short Straight!! 500 pts!");
         }
-
-
     }
 
     private int inputInt(){
