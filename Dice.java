@@ -49,4 +49,8 @@ public class Dice {
     public int hashCode() {
         return Objects.hashCode(diceSide);
     }
+
+    public DiceSides getDiceSide() {
+        return diceSide;
+    }
 }
