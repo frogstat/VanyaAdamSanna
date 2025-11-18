@@ -43,7 +43,7 @@ public class DiceGame {
         Player player2 = new Player(scanner.nextLine());
         Player currentPlayer = player1;
 
-        while (player1.getScore() < scoreToWin && player2.getScore() < scoreToWin){
+        while (player1.getScore() <= scoreToWin && player2.getScore() <= scoreToWin){
 
             System.out.println(currentPlayer.getName() + "'s turn!");
             System.out.println("Type 'roll' to throw your dice!");
@@ -56,6 +56,7 @@ public class DiceGame {
 
             throwAllDice();
             printDiceSet();
+            checkResult(currentPlayer);
 
 
             if(currentPlayer.equals(player1)){
@@ -120,6 +121,45 @@ public class DiceGame {
                 }
             }
         }
+    }
+
+    private String isStraight(){
+        if(diceSet.contains(new Dice(DiceSides.ONE))
+                && diceSet.contains(new Dice(DiceSides.TWO))
+                && diceSet.contains(new Dice(DiceSides.THREE))
+                && diceSet.contains(new Dice(DiceSides.FOUR))
+                && diceSet.contains(new Dice(DiceSides.FIVE))){
+            if(diceSet.contains(new Dice(DiceSides.SIX))){
+                return "Flush";
+            }
+            return "Short Straight";
+        }
+        else if (diceSet.contains(new Dice(DiceSides.TWO))
+                && diceSet.contains(new Dice(DiceSides.THREE))
+                && diceSet.contains(new Dice(DiceSides.FOUR))
+                && diceSet.contains(new Dice(DiceSides.FIVE))
+                && diceSet.contains(new Dice(DiceSides.SIX))) {
+            return "Long Straight";
+        }
+        return "none";
+    }
+
+
+
+    private void checkResult(Player currentPlayer){
+        if(isStraight().equals("Flush")){
+            currentPlayer.addScore(1500);
+            System.out.println("Flush! 1500 pts!");
+        }
+        else if(isStraight().equals("Long Straight")){
+            currentPlayer.addScore(750);
+            System.out.println("Long Straight!! 750 pts!");
+        }
+        else if(isStraight().equals("Short Straight")){
+            currentPlayer.addScore(500);
+            System.out.println("Short Straight!! 500 pts!");
+        }
+
 
     }
 
