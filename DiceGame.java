@@ -112,8 +112,9 @@ public class DiceGame {
         return false;
     }
 
-    public void printDiceSet() {
+    public void printDiceSet() throws InterruptedException {
         for (Dice dice : diceSet) {
+            Thread.sleep(250);
             System.out.print(dice + " ");
         }
         System.out.println();
@@ -123,5 +124,6 @@ public class DiceGame {
         for (Dice dice : diceSet) {
             dice.throwDice();
         }
+        diceSet.sort(Comparator.comparing(Dice::getDiceSide));
     }
 }
