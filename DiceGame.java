@@ -113,6 +113,8 @@ public class DiceGame {
     }
 
     public void printDiceSet() throws InterruptedException {
+        System.out.println("Rolling...");
+        Thread.sleep(500);
         for (Dice dice : diceSet) {
             Thread.sleep(250);
             System.out.print(dice + " ");
