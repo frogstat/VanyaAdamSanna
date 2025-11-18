@@ -151,7 +151,6 @@ public class DiceGame {
     }
 
     private void removeDice(List<DiceSides> diceToRemove){
-        System.out.println(diceSet);
         for(DiceSides diceSideToRemove : diceToRemove){
             for (int i = 0; i < 6; i++) {
                 if (diceSet.get(i).getDiceSide() == diceSideToRemove) {
