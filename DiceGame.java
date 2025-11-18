@@ -47,6 +47,9 @@ public class DiceGame {
         Player currentPlayer = player1;
 
         while (player1.getScore() < scoreToWin && player2.getScore() < scoreToWin){
+            System.out.println("**********************************");
+            System.out.println(player1);
+            System.out.println(player2);
             System.out.println(currentPlayer.getName() + "'s turn! Type 'roll' to throw your dice!");
             String answer = scanner.nextLine();
             while(!answer.equalsIgnoreCase("roll")){
@@ -62,13 +65,11 @@ public class DiceGame {
             checkResult(currentPlayer);
 
             currentPlayer = currentPlayer == player1 ? player2 : player1;
-            System.out.println(player1);
-            System.out.println(player2);
         }
-
         Player winner = player1.getScore() > player2.getScore() ? player1 : player2;
         System.out.println(winner.getName() + " wins!");
         Thread.sleep(1000);
+        System.out.println("**********************************");
     }
 
     private String getRules(){
@@ -132,20 +133,117 @@ public class DiceGame {
         return true;
     }
 
+    private Dice hasThreeOrMoreInARow(int target){
+        int amount;
+
+        for(DiceSides side : DiceSides.values()){
+            amount = 0;
+            for(Dice die : diceSet){
+                if(die.getDiceSide() == side){
+                    amount++;
+                }
+                if(amount == target){
+                    return die;
+                }
+            }
+        }
+        return null;
+    }
+
+    private void removeDice(List<DiceSides> diceToRemove){
+        System.out.println(diceSet);
+        for(DiceSides diceSideToRemove : diceToRemove){
+            for (int i = 0; i < 6; i++) {
+                if (diceSet.get(i).getDiceSide() == diceSideToRemove) {
+                    diceSet.remove(i);
+                    break;
+                }
+            }
+        }
+    }
+
 
 
     private void checkResult(Player currentPlayer){
+        int score = 0;
         if(hasStraight(List.of(DiceSides.ONE,DiceSides.TWO,DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE, DiceSides.SIX))){
             currentPlayer.addScore(1500);
             System.out.println("Flush! 1500 pts!");
+            return; //No point checking the rest if this is true;
         }
         else if(hasStraight(List.of(DiceSides.TWO,DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE, DiceSides.SIX))){
-            currentPlayer.addScore(750);
+            score += 750;
+            removeDice(List.of(DiceSides.TWO,DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE, DiceSides.SIX));
             System.out.println("Long Straight!! 750 pts!");
         }
         else if(hasStraight(List.of(DiceSides.ONE,DiceSides.TWO,DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE))){
-            currentPlayer.addScore(500);
+            score += 500;
+            removeDice(List.of(DiceSides.ONE,DiceSides.TWO,DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE));
             System.out.println("Short Straight!! 500 pts!");
+        }
+        else{
+            Dice dice;
+            for (int i = 6; i >= 3; i--) {
+                int scoreMultiplier = 0;
+                switch(i){
+                    case 6 -> scoreMultiplier = 2*2*2;
+                    case 5 -> scoreMultiplier = 2*2;
+                    case 4 -> scoreMultiplier = 2;
+                    case 3 -> scoreMultiplier = 1;
+                }
+                if((dice = hasThreeOrMoreInARow(i)) != null){
+                    int baseMultiplier = dice.getDiceSide() == DiceSides.ONE ? 1000 : 100;
+                    score += dice.getDiceSide().getValue()*baseMultiplier*scoreMultiplier;
+                    System.out.println(i + " in a row! " + dice.getDiceSide().getValue()*baseMultiplier*scoreMultiplier + " pts!");
+                    Dice finalDice1 = dice;
+                    diceSet.removeIf((d) -> d.getDiceSide() == finalDice1.getDiceSide());
+                    //Since you can have 2 three-in-a-rows, it checks one more time.
+                    if(i == 3){
+                        if((dice = hasThreeOrMoreInARow(i)) != null){
+                            score += dice.getDiceSide().getValue()*baseMultiplier*scoreMultiplier;
+                            System.out.println("Another 3 in a row! " + dice.getDiceSide().getValue()*baseMultiplier*scoreMultiplier + " pts!");
+                            Dice finalDice2 = dice;
+                            diceSet.removeIf((d) -> d.getDiceSide() == finalDice2.getDiceSide());
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        int amountOfOnes = 0;
+        int amountOfFives = 0;
+        for(Dice die : diceSet){
+            if(die.getDiceSide() == DiceSides.ONE){
+                amountOfOnes++;
+                score+=100;
+            }
+            else if(die.getDiceSide() == DiceSides.FIVE){
+                amountOfFives++;
+                score+=50;
+            }
+        }
+        //If you have more than 2 ones or fives, the above in-a-row functions will apply instead.
+        switch(amountOfOnes){
+            case 1 -> System.out.println("ONE! 100 pts!");
+            case 2 -> System.out.println("2 ONES! 200 pts!");
+        }
+        switch(amountOfFives){
+            case 1 -> System.out.println("FIVE! 50 pts!");
+            case 2 -> System.out.println("2 FIVES! 100 pts!");
+        }
+
+        diceSet.clear();
+        resetDiceSet();
+
+        System.out.println(currentPlayer.getName() + " got " + score + " points!");
+        currentPlayer.addScore(score);
+
+    }
+
+    private void resetDiceSet(){
+        for (int i = 1; i <= 6; i++) {
+            diceSet.add(new Dice());
         }
     }
 

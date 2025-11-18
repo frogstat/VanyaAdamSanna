@@ -56,6 +56,6 @@ public class Player {
      * -Adam
      */
     public String toString(){
-        return "Player: " + getName() + " has " + getScore() + " points";
+        return getName() + " has " + getScore() + " points";
     }
 }
