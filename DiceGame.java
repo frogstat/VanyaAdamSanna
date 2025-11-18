@@ -21,16 +21,14 @@ public class DiceGame {
                     [1] Play Game
                     [2] Rules
                     [3] Options
-                    [4] Exit
-                    """);
+                    [4] Exit""");
             while(choice < 1 || choice > 4){
-                System.out.print("Your selection: ");
                 choice = inputInt();
             }
             switch (choice) {
                 case 1 -> System.out.println("Placeholder");
                 case 2 -> System.out.println(getRules());
-                case 3 -> System.out.println("Placeholder2");
+                case 3 -> gameSettings();
                 case 4 -> {
                     return;
                 }
@@ -63,17 +61,38 @@ public class DiceGame {
                 ⚁⚂⚃⚄⚅ = 750 pts
                 ⚀⚁⚂⚃⚄⚅ = 1500 pts
                 Good luck!
-                ************************
-                """;
+                ************************""";
     }
 
     private void gameSettings(){
+        int choice;
+        while(true) {
+            System.out.println("""
+                    [1] Change winning score
+                    [2] Back to menu""");
+            choice = inputInt();
+            switch (choice) {
+                case 1 -> {
+                    System.out.println("Min 500, max 5000. Current winning score: " + scoreToWin);
+                    System.out.print("Enter new winning score: ");
+                    if (setScoreToWin(inputInt())) {
+                        System.out.println("Changed score to win to " + scoreToWin);
+                    } else {
+                        System.out.println("Invalid score");
+                    }
+                }
+                case 2 -> {
+                    return;
+                }
+            }
+        }
 
     }
 
     private int inputInt(){
         int choice;
         while(true) {
+            System.out.print("Your selection: ");
             try {
                 choice = scanner.nextInt();
                 scanner.nextLine();
@@ -85,4 +104,11 @@ public class DiceGame {
         return choice;
     }
 
+    public boolean setScoreToWin(int scoreToWin) {
+        if(scoreToWin > 500 && scoreToWin < 5000){
+            this.scoreToWin = scoreToWin;
+            return true;
+        }
+        return false;
+    }
 }
