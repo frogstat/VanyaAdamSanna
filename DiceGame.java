@@ -41,13 +41,14 @@ public class DiceGame {
         Player player1 = new Player(scanner.nextLine());
         System.out.print("Player Two! Enter your name: ");
         Player player2 = new Player(scanner.nextLine());
+
+        System.out.println(player1.getName() + " VS " + player2.getName());
+        System.out.println("First to " + scoreToWin + " wins!");
         Player currentPlayer = player1;
 
-        while (player1.getScore() <= scoreToWin && player2.getScore() <= scoreToWin){
-
+        while (player1.getScore() < scoreToWin && player2.getScore() < scoreToWin){
             System.out.println(currentPlayer.getName() + "'s turn! Type 'roll' to throw your dice!");
-            String answer = "";
-            answer = scanner.nextLine();
+            String answer = scanner.nextLine();
             while(!answer.equalsIgnoreCase("roll")){
                 System.out.print("Please type roll: ");
                 answer = scanner.nextLine();
@@ -55,21 +56,19 @@ public class DiceGame {
 
             throwAllDice();
             printDiceSet();
-            rethrow();
+            if(rethrow()) {
+                printDiceSet();
+            }
             checkResult(currentPlayer);
-            printDiceSet();
 
-
-            if(currentPlayer.equals(player1)){
-                currentPlayer = player2;
-            }
-            else {
-                currentPlayer = player1;
-            }
+            currentPlayer = currentPlayer == player1 ? player2 : player1;
+            System.out.println(player1);
+            System.out.println(player2);
         }
 
-        player1.resetScore();
-        player2.resetScore();
+        Player winner = player1.getScore() > player2.getScore() ? player1 : player2;
+        System.out.println(winner.getName() + " wins!");
+        Thread.sleep(1000);
     }
 
     private String getRules(){
@@ -191,14 +190,14 @@ public class DiceGame {
         diceSet.sort(Comparator.comparing(Dice::getDiceSide));
     }
 
-    public void rethrow() {
+    public boolean rethrow() {
         System.out.println("Do you wish to rethrow any dice? Answer y/n: ");
         String askRethrow = "";
         while(!askRethrow.equalsIgnoreCase("n") && !askRethrow.equalsIgnoreCase("y")) {
             askRethrow = scanner.nextLine();
         }
         if (askRethrow.equalsIgnoreCase("n")) {
-            return;
+            return false;
         }
 
         List<Dice> diceToRethrow = new ArrayList<>();
@@ -220,5 +219,6 @@ public class DiceGame {
         for(Dice dieToRethrow : diceToRethrow){
             dieToRethrow.throwDice();
         }
+        return true;
     }
 }
