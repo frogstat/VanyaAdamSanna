@@ -13,7 +13,7 @@ public class DiceGame {
         scoreToWin = 1500;
     }
 
-    public void gameMenu(){
+    public void gameMenu() throws InterruptedException {
         int choice;
         while(true) {
             choice = 0;
@@ -26,7 +26,7 @@ public class DiceGame {
                 choice = inputInt();
             }
             switch (choice) {
-                case 1 -> System.out.println("Placeholder");
+                case 1 -> playGame();
                 case 2 -> System.out.println(getRules());
                 case 3 -> gameSettings();
                 case 4 -> {
@@ -34,6 +34,40 @@ public class DiceGame {
                 }
             }
         }
+    }
+
+    private void playGame() throws InterruptedException {
+        System.out.print("Player one! Enter your name: ");
+        Player player1 = new Player(scanner.nextLine());
+        System.out.print("Player Two! Enter your name: ");
+        Player player2 = new Player(scanner.nextLine());
+        Player currentPlayer = player1;
+
+        while (player1.getScore() < scoreToWin && player2.getScore() < scoreToWin){
+
+            System.out.println(currentPlayer.getName() + "'s turn!");
+            System.out.println("Type 'roll' to throw your dice!");
+            String answer = "";
+            answer = scanner.nextLine();
+            while(!answer.equalsIgnoreCase("roll")){
+                System.out.print("Please type roll: ");
+                answer = scanner.nextLine();
+            }
+
+            throwAllDice();
+            printDiceSet();
+
+
+            if(currentPlayer.equals(player1)){
+                currentPlayer = player2;
+            }
+            else {
+                currentPlayer = player1;
+            }
+        }
+
+        player1.resetScore();
+        player2.resetScore();
     }
 
     private String getRules(){
