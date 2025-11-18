@@ -13,6 +13,31 @@ public class DiceGame {
         scoreToWin = 1500;
     }
 
+    public void gameMenu(){
+        int choice;
+        while(true) {
+            choice = 0;
+            System.out.println("""
+                    [1] Play Game
+                    [2] Rules
+                    [3] Options
+                    [4] Exit
+                    """);
+            while(choice < 1 || choice > 4){
+                System.out.print("Your selection: ");
+                choice = inputInt();
+            }
+            switch (choice) {
+                case 1 -> System.out.println("Placeholder");
+                case 2 -> System.out.println(getRules());
+                case 3 -> System.out.println("Placeholder2");
+                case 4 -> {
+                    return;
+                }
+            }
+        }
+    }
+
     private String getRules(){
         return """
                 ************************
@@ -42,33 +67,22 @@ public class DiceGame {
                 """;
     }
 
-    public void gameMenu(){
+    private void gameSettings(){
+
+    }
+
+    private int inputInt(){
         int choice;
         while(true) {
-            choice = 0;
-            System.out.println("""
-                    [1] Play Game
-                    [2] Rules
-                    [3] Options
-                    [4] Exit
-                    """);
-            while(choice < 1 || choice > 4){
-                System.out.print("Your selection: ");
-                try {
-                    choice = scanner.nextInt();
-                    scanner.nextLine();
-                }catch(InputMismatchException e){
-                    scanner.nextLine();
-                }
-            }
-            switch (choice) {
-                case 1 -> System.out.println("Placeholder");
-                case 2 -> System.out.println(getRules());
-                case 3 -> System.out.println("Placeholder2");
-                case 4 -> {
-                    return;
-                }
+            try {
+                choice = scanner.nextInt();
+                scanner.nextLine();
+                break;
+            } catch (InputMismatchException e) {
+                scanner.nextLine();
             }
         }
+        return choice;
     }
+
 }
