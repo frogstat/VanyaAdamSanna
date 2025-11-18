@@ -55,7 +55,9 @@ public class DiceGame {
 
             throwAllDice();
             printDiceSet();
+            rethrow();
             checkResult(currentPlayer);
+            printDiceSet();
 
 
             if(currentPlayer.equals(player1)){
@@ -206,36 +208,31 @@ public class DiceGame {
     public void rethrow() {
         System.out.println("Do you wish to rethrow any dice? Answer y/n: ");
         String askRethrow = "";
-        while(!askRethrow.equalsIgnoreCase("n") || !askRethrow.equalsIgnoreCase("y")) {
+        while(!askRethrow.equalsIgnoreCase("n") && !askRethrow.equalsIgnoreCase("y")) {
             askRethrow = scanner.nextLine();
         }
         if (askRethrow.equalsIgnoreCase("n")) {
             return;
         }
-        System.out.print("Type 0 when you're done. Select dice to rethrow: ");
+
+        List<Dice> diceToRethrow = new ArrayList<>();
+        System.out.println("Type 0 when you're done.");
         while(true){
-            int choosingDice;
-            choosingDice = inputInt();
-            if(choosingDice == 0){
+            int choice;
+            choice = inputInt();
+            if(choice == 0){
                 break;
             }
-            if (choosingDice < 1 || choosingDice > 6){
+            if (choice < 1 || choice > 6){
                 continue;
             }
-
-           List<Dice> diceToRethrow = new ArrayList<>();
-            if(!diceToRethrow.contains(diceSet.get(choosingDice-1))){
-                diceToRethrow.add(diceSet.get(choosingDice-1));
-                System.out.println("Added " + choosingDice + " to rethrow list");
-            }
-            else {
-                diceToRethrow.remove(diceSet.get(choosingDice-1));
-                System.out.println("Removed " + choosingDice + " from rethrow list");
-            }
-
-
-
-
+            choice -= 1;
+            Dice dieToRethrow = diceSet.get(choice);
+            diceToRethrow.add(dieToRethrow);
+            System.out.println("Added " + dieToRethrow + " to rethrow list");
+        }
+        for(Dice dieToRethrow : diceToRethrow){
+            dieToRethrow.throwDice();
         }
     }
 }
