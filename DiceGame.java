@@ -111,4 +111,17 @@ public class DiceGame {
         }
         return false;
     }
+
+    public void printDiceSet() {
+        for (Dice dice : diceSet) {
+            System.out.print(dice + " ");
+        }
+        System.out.println();
+    }
+
+    public void throwAllDice() {
+        for (Dice dice : diceSet) {
+            dice.throwDice();
+        }
+    }
 }
