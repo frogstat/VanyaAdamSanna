@@ -43,11 +43,16 @@ public class DiceGame {
         Player player2 = new Player(scanner.nextLine());
 
         System.out.println(player1.getName() + " VS " + player2.getName());
-        System.out.println("First to " + scoreToWin + " wins!");
+        System.out.println("It's a race to " + scoreToWin + "!");
         Player currentPlayer = player1;
+        boolean isLastStand = false;
 
-        while (player1.getScore() < scoreToWin && player2.getScore() < scoreToWin){
+        while (player2.getScore() < scoreToWin){
             System.out.println("**********************************");
+            if(player1.getScore() >= scoreToWin){
+                System.out.println("LAST STAND! " + player2.getName() + " has one last chance to beat " + player1.getName() + "'s score!");
+                isLastStand = true;
+            }
             System.out.println(player1);
             System.out.println(player2);
             System.out.println(currentPlayer.getName() + "'s turn! Type 'roll' to throw your dice!");
@@ -63,7 +68,9 @@ public class DiceGame {
                 printDiceSet();
             }
             checkResult(currentPlayer);
-
+            if(isLastStand){
+                break;
+            }
             currentPlayer = currentPlayer == player1 ? player2 : player1;
         }
         Player winner = player1.getScore() > player2.getScore() ? player1 : player2;
@@ -79,6 +86,7 @@ public class DiceGame {
                 Two players throw 6 dice each and aim to earn points through different combinations.
                 You can rethrow some or all of your dice once each round.
                 First to reach 1500 pts (can be adjusted) wins.
+                (If player 1 reaches 1500, player 2 has the opportunity to beat their score in a last throw).
                 ⚀⚀⚀ = 1000 pts
                 ⚁⚁⚁ = 200 pts
                 ⚂⚂⚂ = 300 pts
