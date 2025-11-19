@@ -301,17 +301,9 @@ public class DiceGame {
     }
 
     public boolean rethrow() {
-        System.out.println("Do you wish to rethrow any dice? Answer y/n: ");
-        String askRethrow = "";
-        while(!askRethrow.equalsIgnoreCase("n") && !askRethrow.equalsIgnoreCase("y")) {
-            askRethrow = scanner.nextLine();
-        }
-        if (askRethrow.equalsIgnoreCase("n")) {
-            return false;
-        }
+        System.out.println("Choose which dices to rethrow (type '0' when done)");
 
         List<Dice> diceToRethrow = new ArrayList<>();
-        System.out.println("Type 0 when you're done.");
         while(true){
             int choice;
             choice = inputInt();
@@ -323,9 +315,16 @@ public class DiceGame {
             }
             choice -= 1;
             Dice dieToRethrow = diceSet.get(choice);
-            diceToRethrow.add(dieToRethrow);
-            System.out.println("Added " + dieToRethrow + " to rethrow list");
+            if (diceToRethrow.contains(dieToRethrow)){
+                diceToRethrow.remove(dieToRethrow);
+                System.out.println("Removed " + dieToRethrow + " to rethrow list");
+            }
+            else {
+                diceToRethrow.add(dieToRethrow);
+                System.out.println("Added " + dieToRethrow + " to rethrow list");
+            }
         }
+        System.out.println("Showing current result:");
         for(Dice dieToRethrow : diceToRethrow){
             dieToRethrow.throwDice();
         }
