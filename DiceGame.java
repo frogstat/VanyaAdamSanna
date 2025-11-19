@@ -73,8 +73,13 @@ public class DiceGame {
             }
             currentPlayer = currentPlayer == player1 ? player2 : player1;
         }
-        Player winner = player1.getScore() > player2.getScore() ? player1 : player2;
-        System.out.println(winner.getName() + " wins!");
+        if(player1.getScore() == player2.getScore()){
+            System.out.println("It's a tie!");
+        }
+        else{
+            Player winner = player1.getScore() > player2.getScore() ? player1 : player2;
+            System.out.println(winner.getName() + " wins!");
+        }
         Thread.sleep(1000);
         System.out.println("**********************************");
     }
