@@ -38,17 +38,6 @@ public class Dice {
         };
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Dice dice = (Dice) o;
-        return diceSide == dice.diceSide;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(diceSide);
-    }
 
     public DiceSides getDiceSide() {
         return diceSide;
