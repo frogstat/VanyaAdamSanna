@@ -321,6 +321,9 @@ public class DiceGame {
             int choice;
             choice = inputInt();
             if(choice == 0){
+                if (diceToRethrow.isEmpty()){
+                    return false;
+                }
                 break;
             }
             if (choice < 1 || choice > 6){
