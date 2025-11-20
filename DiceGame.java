@@ -276,7 +276,6 @@ public class DiceGame {
     private int inputInt() throws InterruptedException {
         int choice;
         while(true) {
-            slowText("Your selection: ",false);
             try {
                 choice = scanner.nextInt();
                 scanner.nextLine();
