@@ -17,17 +17,17 @@ public class DiceGame {
         int choice;
         while(true) {
             choice = 0;
-            System.out.println("""
+            slowText("""
                     [1] Play Game
                     [2] Rules
                     [3] Options
-                    [4] Exit""");
+                    [4] Exit""",true);
             while(choice < 1 || choice > 4){
                 choice = inputInt();
             }
             switch (choice) {
                 case 1 -> playGame();
-                case 2 -> System.out.println(getRules());
+                case 2 -> slowText(getRules(),true);
                 case 3 -> gameSettings();
                 case 4 -> {
                     return;
@@ -37,28 +37,28 @@ public class DiceGame {
     }
 
     private void playGame() throws InterruptedException {
-        System.out.print("Player one! Enter your name: ");
+        slowText("Player one! Enter your name: ",false);
         Player player1 = new Player(scanner.nextLine());
-        System.out.print("Player Two! Enter your name: ");
+        slowText("Player Two! Enter your name: ", false);
         Player player2 = new Player(scanner.nextLine());
 
-        System.out.println(player1.getName() + " VS " + player2.getName());
-        System.out.println("It's a race to " + scoreToWin + "!");
+        slowText(player1.getName() + " VS " + player2.getName(),true);
+        slowText("It's a race to " + scoreToWin + "!", true);
         Player currentPlayer = player1;
         boolean isLastStand = false;
 
         while (player2.getScore() < scoreToWin){
             System.out.println("**********************************");
             if(player1.getScore() >= scoreToWin){
-                System.out.println("LAST STAND! " + player2.getName() + " has one last chance to beat " + player1.getName() + "'s score!");
+                slowText("LAST STAND! " + player2.getName() + " has one last chance to beat " + player1.getName() + "'s score!",true);
                 isLastStand = true;
             }
             System.out.println(player1);
             System.out.println(player2);
-            System.out.println(currentPlayer.getName() + "'s turn! Type 'roll' to throw your dice!");
+            slowText(currentPlayer.getName() + "'s turn! Type 'roll' to throw your dice!",true);
             String answer = scanner.nextLine();
             while(!answer.equalsIgnoreCase("roll")){
-                System.out.print("Please type roll: ");
+                slowText("Please type roll: ",false);
                 answer = scanner.nextLine();
             }
 
@@ -74,11 +74,11 @@ public class DiceGame {
             currentPlayer = currentPlayer == player1 ? player2 : player1;
         }
         if(player1.getScore() == player2.getScore()){
-            System.out.println("It's a tie!");
+            slowText("It's a tie!",true);
         }
         else{
             Player winner = player1.getScore() > player2.getScore() ? player1 : player2;
-            System.out.println(winner.getName() + " wins!");
+            slowText(winner.getName() + " wins!",true);
         }
         Thread.sleep(1000);
         System.out.println("**********************************");
@@ -113,21 +113,21 @@ public class DiceGame {
                 ************************""";
     }
 
-    private void gameSettings(){
+    private void gameSettings() throws InterruptedException {
         int choice;
         while(true) {
-            System.out.println("""
+            slowText("""
                     [1] Change winning score
-                    [2] Back to menu""");
+                    [2] Back to menu""",true);
             choice = inputInt();
             switch (choice) {
                 case 1 -> {
-                    System.out.println("Min 500, max 5000. Current winning score: " + scoreToWin);
-                    System.out.print("Enter new winning score: ");
+                    slowText("Min 500, max 5000. Current winning score: " + scoreToWin,true);
+                    slowText("Enter new winning score: ",false);
                     if (setScoreToWin(inputInt())) {
-                        System.out.println("Changed score to win to " + scoreToWin);
+                        slowText("Changed score to win to " + scoreToWin,true);
                     } else {
-                        System.out.println("Invalid score");
+                        slowText("Invalid score",true);
                     }
                 }
                 case 2 -> {
@@ -144,6 +144,16 @@ public class DiceGame {
             }
         }
         return true;
+    }
+
+    private void slowText(String text,boolean lineBreak) throws InterruptedException{
+        for (char c : text.toCharArray()) {
+            System.out.print(c);
+            Thread.sleep(25);
+        }
+        if(lineBreak){
+            System.out.println();
+        }
     }
 
     private Dice hasThreeOrMoreInARow(int target){
@@ -176,22 +186,22 @@ public class DiceGame {
 
 
 
-    private void checkResult(Player currentPlayer){
+    private void checkResult(Player currentPlayer) throws InterruptedException {
         int score = 0;
         if(hasStraight(List.of(DiceSides.ONE,DiceSides.TWO,DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE, DiceSides.SIX))){
             currentPlayer.addScore(1500);
-            System.out.println("Flush! 1500 pts!");
+            slowText("Flush! 1500 pts!",true);
             return; //No point checking the rest if this is true;
         }
         else if(hasStraight(List.of(DiceSides.TWO,DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE, DiceSides.SIX))){
             score += 750;
             removeDice(List.of(DiceSides.TWO,DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE, DiceSides.SIX));
-            System.out.println("Long Straight!! 750 pts!");
+            slowText("Long Straight!! 750 pts!",true);
         }
         else if(hasStraight(List.of(DiceSides.ONE,DiceSides.TWO,DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE))){
             score += 500;
             removeDice(List.of(DiceSides.ONE,DiceSides.TWO,DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE));
-            System.out.println("Short Straight!! 500 pts!");
+            slowText("Short Straight!! 500 pts!",true);
         }
         else{
             Dice dice;
@@ -206,14 +216,14 @@ public class DiceGame {
                 if((dice = hasThreeOrMoreInARow(i)) != null){
                     int baseMultiplier = dice.getDiceSide() == DiceSides.ONE ? 1000 : 100;
                     score += dice.getDiceSide().getValue()*baseMultiplier*scoreMultiplier;
-                    System.out.println(i + " in a row! " + dice.getDiceSide().getValue()*baseMultiplier*scoreMultiplier + " pts!");
+                    slowText(i + " in a row! " + dice.getDiceSide().getValue()*baseMultiplier*scoreMultiplier + " pts!",true);
                     Dice finalDice1 = dice;
                     diceSet.removeIf((d) -> d.getDiceSide() == finalDice1.getDiceSide());
                     //Since you can have 2 three-in-a-rows, it checks one more time.
                     if(i == 3){
                         if((dice = hasThreeOrMoreInARow(i)) != null){
                             score += dice.getDiceSide().getValue()*baseMultiplier*scoreMultiplier;
-                            System.out.println("Another 3 in a row! " + dice.getDiceSide().getValue()*baseMultiplier*scoreMultiplier + " pts!");
+                            slowText("Another 3 in a row! " + dice.getDiceSide().getValue()*baseMultiplier*scoreMultiplier + " pts!",true);
                             Dice finalDice2 = dice;
                             diceSet.removeIf((d) -> d.getDiceSide() == finalDice2.getDiceSide());
                         }
@@ -237,18 +247,18 @@ public class DiceGame {
         }
         //If you have more than 2 ones or fives, the above in-a-row functions will apply instead.
         switch(amountOfOnes){
-            case 1 -> System.out.println("ONE! 100 pts!");
-            case 2 -> System.out.println("2 ONES! 200 pts!");
+            case 1 -> slowText("ONE! 100 pts!",true);
+            case 2 -> slowText("2 ONES! 200 pts!",true);
         }
         switch(amountOfFives){
-            case 1 -> System.out.println("FIVE! 50 pts!");
-            case 2 -> System.out.println("2 FIVES! 100 pts!");
+            case 1 -> slowText("FIVE! 50 pts!",true);
+            case 2 -> slowText("2 FIVES! 100 pts!",true);
         }
 
         diceSet.clear();
         resetDiceSet();
 
-        System.out.println(currentPlayer.getName() + " got " + score + " points!");
+        slowText(currentPlayer.getName() + " got " + score + " points!",true);
         currentPlayer.addScore(score);
 
     }
@@ -259,10 +269,10 @@ public class DiceGame {
         }
     }
 
-    private int inputInt(){
+    private int inputInt() throws InterruptedException {
         int choice;
         while(true) {
-            System.out.print("Your selection: ");
+            slowText("Your selection: ",false);
             try {
                 choice = scanner.nextInt();
                 scanner.nextLine();
@@ -283,7 +293,7 @@ public class DiceGame {
     }
 
     public void printDiceSet() throws InterruptedException {
-        System.out.println("Rolling...");
+        slowText("Rolling...",true);
         Thread.sleep(500);
         for (Dice dice : diceSet) {
             Thread.sleep(250);
@@ -300,8 +310,8 @@ public class DiceGame {
         diceSet.sort(Comparator.comparing(Dice::getDiceSide));
     }
 
-    public boolean rethrow() {
-        System.out.println("Choose which dices to rethrow (type '0' when done)");
+    public boolean rethrow() throws InterruptedException {
+        slowText("Choose which dice to rethrow (1-6). Type '0' when done.",true);
 
         List<Dice> diceToRethrow = new ArrayList<>();
         while(true){
@@ -317,14 +327,14 @@ public class DiceGame {
             Dice dieToRethrow = diceSet.get(choice);
             if (diceToRethrow.contains(dieToRethrow)){
                 diceToRethrow.remove(dieToRethrow);
-                System.out.println("Removed " + dieToRethrow + " to rethrow list");
+                slowText("Removed " + dieToRethrow + " to rethrow list",true);
             }
             else {
                 diceToRethrow.add(dieToRethrow);
-                System.out.println("Added " + dieToRethrow + " to rethrow list");
+                slowText("Added " + dieToRethrow + " to rethrow list",true);
             }
         }
-        System.out.println("Showing current result:");
+        slowText("Rethrow: ",false);
         for(Dice dieToRethrow : diceToRethrow){
             dieToRethrow.throwDice();
         }
