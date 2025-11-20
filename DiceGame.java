@@ -14,6 +14,10 @@ public class DiceGame {
     }
 
     public void gameMenu() throws InterruptedException {
+        System.out.println("***********************************");
+        System.out.println("Adam, Sanna och Vanya's DICE GAME!");
+        System.out.println("***********************************");
+        Thread.sleep(1000);
         int choice;
         while(true) {
             choice = 0;
