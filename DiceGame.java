@@ -17,7 +17,7 @@ public class DiceGame {
         System.out.println("***********************************");
         System.out.println("Adam, Sanna och Vanya's DICE GAME!");
         System.out.println("***********************************");
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         int choice;
         while(true) {
             choice = 0;
@@ -52,13 +52,13 @@ public class DiceGame {
         boolean isLastStand = false;
 
         while (player2.getScore() < scoreToWin){
-            System.out.println("**********************************");
+            slowText("**********************************",true);
             if(player1.getScore() >= scoreToWin){
                 slowText("LAST STAND! " + player2.getName() + " has one last chance to beat " + player1.getName() + "'s score!",true);
                 isLastStand = true;
             }
-            System.out.println(player1);
-            System.out.println(player2);
+            slowText(player1.toString(),true);
+            slowText(player2.toString(), true);
             slowText(currentPlayer.getName() + "'s turn! Type 'roll' to throw your dice!",true);
             String answer = scanner.nextLine();
             while(!answer.equalsIgnoreCase("roll")){
