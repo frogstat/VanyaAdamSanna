@@ -333,7 +333,7 @@ public class DiceGame {
             Dice dieToRethrow = diceSet.get(choice);
             if (diceToRethrow.contains(dieToRethrow)){
                 diceToRethrow.remove(dieToRethrow);
-                slowText("Removed " + dieToRethrow + " to rethrow list",true);
+                slowText("Removed " + dieToRethrow + " from rethrow list",true);
             }
             else {
                 diceToRethrow.add(dieToRethrow);
