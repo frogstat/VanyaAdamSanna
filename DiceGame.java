@@ -34,13 +34,14 @@ public class DiceGame {
                     [1] Play Game
                     [2] Rules
                     [3] Options
-                    [4] Exit""", true);
+                    [4] Exit
+                    """);
             while (choice < 1 || choice > 4) {
                 choice = inputInt();
             }
             switch (choice) {
                 case 1 -> playGame();
-                case 2 -> slowText(getRules(), true);
+                case 2 -> slowText(getRules());
                 case 3 -> gameSettings();
                 case 4 -> {
                     return;
@@ -57,28 +58,28 @@ public class DiceGame {
      * To make things fair, player 2 gets a final throw if player 1 reaches the winning score.
      */
     private void playGame() throws InterruptedException {
-        slowText("Player one! Enter your name: ", false);
+        slowText("Player one! Enter your name: ");
         Player player1 = new Player(scanner.nextLine());
-        slowText("Player Two! Enter your name: ", false);
+        slowText("Player two! Enter your name: ");
         Player player2 = new Player(scanner.nextLine());
 
-        slowText(player1.getName() + " VS " + player2.getName(), true);
-        slowText("It's a race to " + scoreToWin + "!", true);
+        slowText(player1.getName() + " VS " + player2.getName() + "\n");
+        slowText("It's a race to " + scoreToWin + "!\n");
         Player currentPlayer = player1;
         boolean isLastStand = false;
 
         while (player2.getScore() < scoreToWin) {
-            slowText("**********************************", true);
+            slowText("**********************************\n");
             if (player1.getScore() >= scoreToWin) {
-                slowText("LAST STAND! " + player2.getName() + " has one last chance to beat " + player1.getName() + "'s score!", true);
+                slowText("LAST STAND! " + player2.getName() + " has one last chance to beat " + player1.getName() + "'s score!\n");
                 isLastStand = true;
             }
-            slowText(player1.toString(), true);
-            slowText(player2.toString(), true);
-            slowText(currentPlayer.getName() + "'s turn! Type 'roll' to throw your dice!", true);
+            slowText(player1 + "\n");
+            slowText(player2 + "\n");
+            slowText(currentPlayer.getName() + "'s turn! Type 'roll' to throw your dice!\n");
             String answer = scanner.nextLine();
             while (!answer.equalsIgnoreCase("roll")) {
-                slowText("Please type roll: ", false);
+                slowText("Please type roll: ");
                 answer = scanner.nextLine();
             }
 
@@ -94,10 +95,10 @@ public class DiceGame {
             currentPlayer = currentPlayer == player1 ? player2 : player1;
         }
         if (player1.getScore() == player2.getScore()) {
-            slowText("It's a tie!", true);
+            slowText("It's a tie!\n");
         } else {
             Player winner = player1.getScore() > player2.getScore() ? player1 : player2;
-            slowText(winner.getName() + " wins!", true);
+            slowText(winner.getName() + " wins!\n");
         }
         Thread.sleep(1000);
         System.out.println("**********************************");
@@ -134,7 +135,8 @@ public class DiceGame {
                 ⚁⚂⚃⚄⚅ = 750 pts
                 ⚀⚁⚂⚃⚄⚅ = 1500 pts
                 Good luck!
-                ************************""";
+                ************************
+                """;
     }
 
     /**
@@ -147,16 +149,17 @@ public class DiceGame {
         while (true) {
             slowText("""
                     [1] Change winning score
-                    [2] Back to menu""", true);
+                    [2] Back to menu
+                    """);
             choice = inputInt();
             switch (choice) {
                 case 1 -> {
-                    slowText("Min 500, max 5000. Current winning score: " + scoreToWin, true);
-                    slowText("Enter new winning score: ", false);
+                    slowText("Min 500, max 5000. Current winning score: " + scoreToWin + "\n");
+                    slowText("Enter new winning score: ");
                     if (setScoreToWin(inputInt())) {
-                        slowText("Changed score to win to " + scoreToWin, true);
+                        slowText("Changed score to win to " + scoreToWin + "\n");
                     } else {
-                        slowText("Invalid score", true);
+                        slowText("Invalid score\n");
                     }
                 }
                 case 2 -> {
@@ -175,7 +178,7 @@ public class DiceGame {
      * @return true if the new score is allowed. False if not.
      */
     public boolean setScoreToWin(int scoreToWin) {
-        if (scoreToWin > 500 && scoreToWin < 5000) {
+        if (scoreToWin >= 500 && scoreToWin <= 5000) {
             this.scoreToWin = scoreToWin;
             return true;
         }
@@ -187,16 +190,11 @@ public class DiceGame {
      * <p>
      * Takes a string and prints it letter by letter for prettier output.
      * @param text The string to be printed.
-     * @param lineBreak whether to add a line break at the end.
-     * @throws InterruptedException
      */
-    private void slowText(String text, boolean lineBreak) throws InterruptedException {
+    private void slowText(String text) throws InterruptedException {
         for (char c : text.toCharArray()) {
             System.out.print(c);
-            Thread.sleep(25);
-        }
-        if (lineBreak) {
-            System.out.println();
+            Thread.sleep(35);
         }
     }
 
@@ -274,16 +272,16 @@ public class DiceGame {
         int score = 0;
         if (hasStraight(List.of(DiceSides.ONE, DiceSides.TWO, DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE, DiceSides.SIX))) {
             currentPlayer.addScore(1500);
-            slowText("Flush! 1500 pts!", true);
+            slowText("Flush! 1500 pts!\n");
             return; //No point checking the rest if this is true;
         } else if (hasStraight(List.of(DiceSides.TWO, DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE, DiceSides.SIX))) {
             score += 750;
             removeDice(List.of(DiceSides.TWO, DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE, DiceSides.SIX));
-            slowText("Long Straight!! 750 pts!", true);
+            slowText("Long Straight!! 750 pts!\n");
         } else if (hasStraight(List.of(DiceSides.ONE, DiceSides.TWO, DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE))) {
             score += 500;
             removeDice(List.of(DiceSides.ONE, DiceSides.TWO, DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE));
-            slowText("Short Straight!! 500 pts!", true);
+            slowText("Short Straight!! 500 pts!\n");
         } else {
             Dice dice;
             for (int i = 6; i >= 3; i--) {
@@ -297,14 +295,14 @@ public class DiceGame {
                 if ((dice = hasThreeOrMoreInARow(i)) != null) {
                     int baseMultiplier = dice.getDiceSide() == DiceSides.ONE ? 1000 : 100;
                     score += dice.getDiceSide().getValue() * baseMultiplier * scoreMultiplier;
-                    slowText(i + " in a row! " + dice.getDiceSide().getValue() * baseMultiplier * scoreMultiplier + " pts!", true);
+                    slowText(i + " in a row! " + dice.getDiceSide().getValue() * baseMultiplier * scoreMultiplier + " pts!\n");
                     Dice finalDice1 = dice;
                     diceSet.removeIf((d) -> d.getDiceSide() == finalDice1.getDiceSide());
                     //Since you can have 2 three-in-a-rows, it checks one more time.
                     if (i == 3) {
                         if ((dice = hasThreeOrMoreInARow(i)) != null) {
                             score += dice.getDiceSide().getValue() * baseMultiplier * scoreMultiplier;
-                            slowText("Another 3 in a row! " + dice.getDiceSide().getValue() * baseMultiplier * scoreMultiplier + " pts!", true);
+                            slowText("Another 3 in a row! " + dice.getDiceSide().getValue() * baseMultiplier * scoreMultiplier + " pts!\n");
                             Dice finalDice2 = dice;
                             diceSet.removeIf((d) -> d.getDiceSide() == finalDice2.getDiceSide());
                         }
@@ -327,17 +325,17 @@ public class DiceGame {
         }
         //If you have more than 2 ones or fives, the above in-a-row functions will apply instead.
         switch (amountOfOnes) {
-            case 1 -> slowText("ONE! 100 pts!", true);
-            case 2 -> slowText("2 ONES! 200 pts!", true);
+            case 1 -> slowText("ONE! 100 pts!\n");
+            case 2 -> slowText("2 ONES! 200 pts!\n");
         }
         switch (amountOfFives) {
-            case 1 -> slowText("FIVE! 50 pts!", true);
-            case 2 -> slowText("2 FIVES! 100 pts!", true);
+            case 1 -> slowText("FIVE! 50 pts!\n");
+            case 2 -> slowText("2 FIVES! 100 pts!\n");
         }
 
         resetDiceSet();
 
-        slowText(currentPlayer.getName() + " got " + score + " points!", true);
+        slowText(currentPlayer.getName() + " got " + score + " points!\n");
         currentPlayer.addScore(score);
 
     }
@@ -378,7 +376,7 @@ public class DiceGame {
 
 
     public void printDiceSet() throws InterruptedException {
-        slowText("Rolling...", true);
+        slowText("Rolling...\n");
         Thread.sleep(500);
         for (Dice dice : diceSet) {
             Thread.sleep(250);
@@ -396,7 +394,7 @@ public class DiceGame {
     }
 
     public boolean rethrow() throws InterruptedException {
-        slowText("Choose which dice to rethrow (1-6). Type '0' when done.", true);
+        slowText("Choose which dice to rethrow (1-6). Type '0' when done.\n");
 
         List<Dice> diceToRethrow = new ArrayList<>();
         while (true) {
@@ -415,13 +413,13 @@ public class DiceGame {
             Dice dieToRethrow = diceSet.get(choice);
             if (diceToRethrow.contains(dieToRethrow)) {
                 diceToRethrow.remove(dieToRethrow);
-                slowText("Removed " + dieToRethrow + " from rethrow list", true);
+                slowText("Removed " + dieToRethrow + " from rethrow list\n");
             } else {
                 diceToRethrow.add(dieToRethrow);
-                slowText("Added " + dieToRethrow + " to rethrow list", true);
+                slowText("Added " + dieToRethrow + " to rethrow list\n");
             }
         }
-        slowText("Rethrow: ", false);
+        slowText("Rethrow: ");
         for (Dice dieToRethrow : diceToRethrow) {
             dieToRethrow.throwDice();
         }
