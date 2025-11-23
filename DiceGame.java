@@ -13,6 +13,15 @@ public class DiceGame {
         scoreToWin = 1500;
     }
 
+    /**
+     * By Vanya
+     * <p>
+     * Starting menu for the Dice game.
+     * The game always starts here.
+     * <p>
+     * Choose whether to play, see rules, go to options menu or exit.
+     * @throws InterruptedException Required due to slow text feature.
+     */
     public void gameMenu() throws InterruptedException {
         System.out.println("***********************************");
         System.out.println("Adam, Sanna och Vanya's DICE GAME!");
@@ -40,6 +49,13 @@ public class DiceGame {
         }
     }
 
+    /**
+     * By Vanya
+     * <p>
+     * The actual game code itself.
+     * Loops until a player reaches the score goal.
+     * To make things fair, player 2 gets a final throw if player 1 reaches the winning score.
+     */
     private void playGame() throws InterruptedException {
         slowText("Player one! Enter your name: ", false);
         Player player1 = new Player(scanner.nextLine());
@@ -87,6 +103,11 @@ public class DiceGame {
         System.out.println("**********************************");
     }
 
+    /**
+     * By Vanya
+     * <P>
+     * A simple string to show the rules of the game.
+     */
     private String getRules() {
         return """
                 ************************
@@ -116,6 +137,11 @@ public class DiceGame {
                 ************************""";
     }
 
+    /**
+     * By Vanya
+     * <P>
+     * Settings menu. Currently only allows changing the score to win.
+     */
     private void gameSettings() throws InterruptedException {
         int choice;
         while (true) {
@@ -140,15 +166,30 @@ public class DiceGame {
         }
     }
 
-    private boolean hasStraight(List<DiceSides> sidesToLookFor) {
-        for (DiceSides diceSide : sidesToLookFor) {
-            if (diceSet.stream().noneMatch(d -> d.getDiceSide() == diceSide)) {
-                return false;
-            }
+    /**
+     * By Vanya
+     * <P>
+     * Allows the player to change the score to win.
+     * The allowed range is 500 to 5000 points.
+     * @param scoreToWin the new score goal.
+     * @return true if the new score is allowed. False if not.
+     */
+    public boolean setScoreToWin(int scoreToWin) {
+        if (scoreToWin > 500 && scoreToWin < 5000) {
+            this.scoreToWin = scoreToWin;
+            return true;
         }
-        return true;
+        return false;
     }
 
+    /**
+     * By Vanya
+     * <p>
+     * Takes a string and prints it letter by letter for prettier output.
+     * @param text The string to be printed.
+     * @param lineBreak whether to add a line break at the end.
+     * @throws InterruptedException
+     */
     private void slowText(String text, boolean lineBreak) throws InterruptedException {
         for (char c : text.toCharArray()) {
             System.out.print(c);
@@ -159,7 +200,33 @@ public class DiceGame {
         }
     }
 
+    /**
+     * By Vanya
+     * <P>
+     * Checks if the diceSet contains a Short Straight, Long Straight, or a Flush.
+     * @param sidesToLookFor a list of DiceSides to look for.
+     * @return true if all the sides in sidesToLookFor are in diceSet, otherwise false.
+     */
+    private boolean hasStraight(List<DiceSides> sidesToLookFor) {
+        for (DiceSides diceSide : sidesToLookFor) {
+            if (diceSet.stream().noneMatch(d -> d.getDiceSide() == diceSide)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * By Vanya
+     * <P>
+     * Analyzes diceSet and checks if it contains X-in-a-row.
+     * @param target What to look for. 3 checks for 3-in-a-row, 4 checks for 4-in-a-row etc
+     * @return Returns the dice that has the X-in-a-row. Otherwise, returns null.
+     */
     private Dice hasThreeOrMoreInARow(int target) {
+        if(target < 3){
+            throw new IllegalArgumentException("target must be 3 or more.");
+        }
         int amount;
 
         for (DiceSides side : DiceSides.values()) {
@@ -176,6 +243,12 @@ public class DiceGame {
         return null;
     }
 
+    /**
+     * By Vanya
+     * <p>
+     * Takes a list of DiceSides, and removes all dice in diceSet that contain that side.
+     * @param diceToRemove A list that contains the sides to remove.
+     */
     private void removeDice(List<DiceSides> diceToRemove) {
         for (DiceSides diceSideToRemove : diceToRemove) {
             for (int i = 0; i < 6; i++) {
@@ -187,7 +260,16 @@ public class DiceGame {
         }
     }
 
-
+    /**
+     * By Vanya
+     * <p>
+     * Checks the result of the player's throw and awards points accordingly.
+     * Once a die has contributed to award a point, it is removed from the list so it cannot award more points.
+     * <p>
+     * Example: If you get ONE-TWO-THREE-FOUR-FIVE-ONE, you will get 600 points for a short straight + a ONE.
+     * Even though you got 2 ONES, you only get points for the ONE that wasn't part of the short straight.
+     * @param currentPlayer the player who threw the dice. This player earns the points.
+     */
     private void checkResult(Player currentPlayer) throws InterruptedException {
         int score = 0;
         if (hasStraight(List.of(DiceSides.ONE, DiceSides.TWO, DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE, DiceSides.SIX))) {
@@ -253,7 +335,6 @@ public class DiceGame {
             case 2 -> slowText("2 FIVES! 100 pts!", true);
         }
 
-        diceSet.clear();
         resetDiceSet();
 
         slowText(currentPlayer.getName() + " got " + score + " points!", true);
@@ -261,13 +342,26 @@ public class DiceGame {
 
     }
 
+    /**
+     * By Vanya
+     * <p>
+     * This method resets diceSet in preparation of the next round.
+     * Since CheckResult() removes dice, this is needed.
+     */
     private void resetDiceSet() {
+        diceSet.clear();
         for (int i = 1; i <= 6; i++) {
             diceSet.add(new Dice());
         }
     }
 
-    private int inputInt() throws InterruptedException {
+    /**
+     * By Vanya
+     * <P>
+     * This is a simple wrapper for scanner.nextInt() that handles input mismatch.
+     * @return the valid input the user made.
+     */
+    private int inputInt() {
         int choice;
         while (true) {
             try {
@@ -281,13 +375,7 @@ public class DiceGame {
         return choice;
     }
 
-    public boolean setScoreToWin(int scoreToWin) {
-        if (scoreToWin > 500 && scoreToWin < 5000) {
-            this.scoreToWin = scoreToWin;
-            return true;
-        }
-        return false;
-    }
+
 
     public void printDiceSet() throws InterruptedException {
         slowText("Rolling...", true);
