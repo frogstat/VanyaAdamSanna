@@ -1,6 +1,5 @@
 package se.yrgo.game;
 import se.yrgo.utilities.DiceSides;
-import java.util.Objects;
 import java.util.Random;
 
 public class Dice {

@@ -1,5 +1,4 @@
 package se.yrgo.game;
-import se.yrgo.game.*;
 import se.yrgo.utilities.DiceSides;
 import java.util.*;
 
@@ -116,10 +115,12 @@ public class DiceGame {
         return """
                 ************************
                 Rules for the Dice game:
-                Two players throw 6 dice each and aim to earn points\nthrough different combinations.
+                Two players throw 6 dice each and aim to earn points
+                through different combinations.
                 You can rethrow some or all of your dice once each round.
                 First to reach 1500 pts (can be adjusted) wins.
-                (If player 1 reaches 1500, player 2 has the opportunity\nto beat their score in a last throw).
+                (If player 1 reaches 1500, player 2 has the opportunity
+                to beat their score in a last throw).
                 ⚀⚀⚀ = 1000 pts
                 ⚁⚁⚁ = 200 pts
                 ⚂⚂⚂ = 300 pts
