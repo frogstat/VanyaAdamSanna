@@ -1,3 +1,4 @@
+package se.yrgo.game;
 /**
  * A player class for the user to have their unique name and track their score.
  * -Adam
@@ -8,7 +9,7 @@ public class Player {
 
     /**
      * The constructor for the player. Player starts with 0 points
-     * @param name To let the player put in it's name
+     * @param name To let the player put in its name
      * -Adam
      */
     public Player(String name) {

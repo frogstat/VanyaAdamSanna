@@ -1,3 +1,6 @@
+package se.yrgo.game;
+import se.yrgo.game.*;
+import se.yrgo.utilities.DiceSides;
 import java.util.*;
 
 public class DiceGame {
