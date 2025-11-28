@@ -1,5 +1,7 @@
 package se.yrgo.game;
+
 import se.yrgo.utilities.DiceSides;
+
 import java.util.*;
 
 public class DiceGame {
@@ -7,6 +9,12 @@ public class DiceGame {
     private List<Dice> diceSet = new ArrayList<>();
     private int scoreToWin;
     private final Scanner scanner = new Scanner(System.in);
+    final List<DiceSides> lowStraight = new ArrayList<>(List.of(DiceSides.ONE, DiceSides.TWO,
+            DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE));
+    final List<DiceSides> highStraight = new ArrayList<>(List.of(DiceSides.TWO,
+            DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE, DiceSides.SIX));
+    final List<DiceSides> flush = new ArrayList<>(List.of(DiceSides.ONE, DiceSides.TWO,
+            DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE, DiceSides.SIX));
 
     public DiceGame() {
         for (int i = 1; i <= 6; i++) {
@@ -22,6 +30,7 @@ public class DiceGame {
      * The game always starts here.
      * <p>
      * Choose whether to play, see rules, go to options menu or exit.
+     *
      * @throws InterruptedException Required due to slow text feature.
      */
     public void gameMenu() throws InterruptedException {
@@ -108,7 +117,7 @@ public class DiceGame {
 
     /**
      * By Vanya
-     * <P>
+     * <p>
      * A simple string to show the rules of the game.
      */
     private String getRules() {
@@ -145,7 +154,7 @@ public class DiceGame {
 
     /**
      * By Vanya
-     * <P>
+     * <p>
      * Settings menu. Currently only allows changing the score to win.
      */
     private void gameSettings() throws InterruptedException {
@@ -175,9 +184,10 @@ public class DiceGame {
 
     /**
      * By Vanya
-     * <P>
+     * <p>
      * Allows the player to change the score to win.
      * The allowed range is 500 to 5000 points.
+     *
      * @param scoreToWin the new score goal.
      * @return true if the new score is allowed. False if not.
      */
@@ -193,6 +203,7 @@ public class DiceGame {
      * By Vanya
      * <p>
      * Takes a string and prints it letter by letter for prettier output.
+     *
      * @param text The string to be printed.
      */
     private void slowText(String text) throws InterruptedException {
@@ -204,12 +215,13 @@ public class DiceGame {
 
     /**
      * By Vanya
-     * <P>
+     * <p>
      * Checks if the diceSet contains a Short Straight, Long Straight, or a Flush.
+     *
      * @param sidesToLookFor a list of DiceSides to look for.
      * @return true if all the sides in sidesToLookFor are in diceSet, otherwise false.
      */
-    private boolean hasStraight(List<DiceSides> sidesToLookFor) {
+    public boolean hasStraight(List<Dice> diceSet, List<DiceSides> sidesToLookFor) {
         for (DiceSides diceSide : sidesToLookFor) {
             if (diceSet.stream().noneMatch(d -> d.getDiceSide() == diceSide)) {
                 return false;
@@ -220,13 +232,14 @@ public class DiceGame {
 
     /**
      * By Vanya
-     * <P>
+     * <p>
      * Analyzes diceSet and checks if it contains X-in-a-row.
+     *
      * @param target What to look for. 3 checks for 3-in-a-row, 4 checks for 4-in-a-row etc
      * @return Returns the dice that has the X-in-a-row. Otherwise, returns null.
      */
-    private Dice hasThreeOrMoreInARow(int target) {
-        if(target < 3){
+    public Dice hasThreeOrMoreInARow(List<Dice> diceSet, int target) {
+        if (target < 3) {
             throw new IllegalArgumentException("target must be 3 or more.");
         }
         int amount;
@@ -249,6 +262,7 @@ public class DiceGame {
      * By Vanya
      * <p>
      * Takes a list of DiceSides, and removes all dice in diceSet that contain that side.
+     *
      * @param diceToRemove A list that contains the sides to remove.
      */
     private void removeDice(List<DiceSides> diceToRemove) {
@@ -270,21 +284,22 @@ public class DiceGame {
      * <p>
      * Example: If you get ONE-TWO-THREE-FOUR-FIVE-ONE, you will get 600 points for a short straight + a ONE.
      * Even though you got 2 ONES, you only get points for the ONE that wasn't part of the short straight.
+     *
      * @param currentPlayer the player who threw the dice. This player earns the points.
      */
     private void checkResult(Player currentPlayer) throws InterruptedException {
         int score = 0;
-        if (hasStraight(List.of(DiceSides.ONE, DiceSides.TWO, DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE, DiceSides.SIX))) {
+        if (hasStraight(diceSet, flush)) {
             currentPlayer.addScore(1500);
             slowText("Flush! 1500 pts!\n");
             return; //No point checking the rest if this is true;
-        } else if (hasStraight(List.of(DiceSides.TWO, DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE, DiceSides.SIX))) {
+        } else if (hasStraight(diceSet, lowStraight)) {
             score += 750;
-            removeDice(List.of(DiceSides.TWO, DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE, DiceSides.SIX));
+            removeDice(lowStraight);
             slowText("Long Straight!! 750 pts!\n");
-        } else if (hasStraight(List.of(DiceSides.ONE, DiceSides.TWO, DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE))) {
+        } else if (hasStraight(diceSet, highStraight)) {
             score += 500;
-            removeDice(List.of(DiceSides.ONE, DiceSides.TWO, DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE));
+            removeDice(highStraight);
             slowText("Short Straight!! 500 pts!\n");
         } else {
             Dice dice;
@@ -296,7 +311,7 @@ public class DiceGame {
                     case 4 -> scoreMultiplier = 2;
                     case 3 -> scoreMultiplier = 1;
                 }
-                if ((dice = hasThreeOrMoreInARow(i)) != null) {
+                if ((dice = hasThreeOrMoreInARow(diceSet, i)) != null) {
                     int baseMultiplier = dice.getDiceSide() == DiceSides.ONE ? 1000 : 100;
                     score += dice.getDiceSide().getValue() * baseMultiplier * scoreMultiplier;
                     slowText(i + " in a row! " + dice.getDiceSide().getValue() * baseMultiplier * scoreMultiplier + " pts!\n");
@@ -304,7 +319,7 @@ public class DiceGame {
                     diceSet.removeIf((d) -> d.getDiceSide() == finalDice1.getDiceSide());
                     //Since you can have 2 three-in-a-rows, it checks one more time.
                     if (i == 3) {
-                        if ((dice = hasThreeOrMoreInARow(i)) != null) {
+                        if ((dice = hasThreeOrMoreInARow(diceSet, i)) != null) {
                             score += dice.getDiceSide().getValue() * baseMultiplier * scoreMultiplier;
                             slowText("Another 3 in a row! " + dice.getDiceSide().getValue() * baseMultiplier * scoreMultiplier + " pts!\n");
                             Dice finalDice2 = dice;
@@ -359,8 +374,9 @@ public class DiceGame {
 
     /**
      * By Vanya
-     * <P>
+     * <p>
      * This is a simple wrapper for scanner.nextInt() that handles input mismatch.
+     *
      * @return the valid input the user made.
      */
     private int inputInt() {
@@ -376,7 +392,6 @@ public class DiceGame {
         }
         return choice;
     }
-
 
 
     public void printDiceSet() throws InterruptedException {
