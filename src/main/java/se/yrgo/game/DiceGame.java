@@ -2,6 +2,10 @@ package se.yrgo.game;
 
 import se.yrgo.utilities.DiceSides;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.io.File;
 import java.util.*;
 
 public class DiceGame {
@@ -15,12 +19,16 @@ public class DiceGame {
             DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE, DiceSides.SIX));
     final List<DiceSides> flush = new ArrayList<>(List.of(DiceSides.ONE, DiceSides.TWO,
             DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE, DiceSides.SIX));
+    private final Clip diceRollClip;
 
     public DiceGame() {
         for (int i = 1; i <= 6; i++) {
             diceSet.add(new Dice());
         }
         scoreToWin = 1500;
+
+        String diceRollClipPath = "resources/dice_roll.wav";
+        diceRollClip = loadClip(diceRollClipPath);
     }
 
     /**
@@ -397,6 +405,7 @@ public class DiceGame {
     public void printDiceSet() throws InterruptedException {
         slowText("Rolling...\n");
         Thread.sleep(500);
+        playClip(diceRollClip);
         for (Dice dice : diceSet) {
             Thread.sleep(250);
             System.out.print(dice + " ");
@@ -443,5 +452,25 @@ public class DiceGame {
             dieToRethrow.throwDice();
         }
         return true;
+    }
+
+    public Clip loadClip(String path) {
+        try {
+            File soundFile = new File(path);
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            return clip;
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    public void playClip(Clip clip) {
+        if (clip == null) {
+            return;
+        }
+        clip.setFramePosition(0);
+        clip.start();
     }
 }

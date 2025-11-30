@@ -14,7 +14,6 @@ public class Dice {
         this.diceSide = diceSide;
     }
 
-    // TODO: JAVADOC/COMMENTS!
     public void throwDice() {
         int result = random.nextInt(1, 7);
         switch (result) {
