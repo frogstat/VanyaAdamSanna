@@ -1,7 +1,6 @@
 package se.yrgo.game;
 
 import se.yrgo.utilities.DiceSides;
-import se.yrgo.game.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -200,4 +199,5 @@ public class DiceGameTest {
         DiceGame diceGame = new DiceGame();
         assertNull(diceGame.hasThreeOrMoreInARow(diceSet, 6));
     }
+
 }

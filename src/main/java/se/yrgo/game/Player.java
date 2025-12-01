@@ -39,8 +39,13 @@ public class Player {
      * Method to add score for the player
      * -Adam
      */
-    public void addScore(int score){
+    public boolean addScore(int score){
+        if (score <= 0){
+            return false;
+        }
+
         this.score += score;
+        return true;
     }
 
     /**

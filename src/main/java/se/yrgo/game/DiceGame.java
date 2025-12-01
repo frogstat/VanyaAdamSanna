@@ -449,6 +449,9 @@ public class DiceGame {
         diceSet.sort(Comparator.comparing(Dice::getDiceSide));
     }
 
+    /**
+     * By Adam
+     */
     public boolean rethrow() throws InterruptedException {
         slowText("Choose which dice to rethrow (1-6). Type '0' when done.\n");
 
