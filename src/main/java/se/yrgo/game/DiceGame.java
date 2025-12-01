@@ -2,10 +2,9 @@ package se.yrgo.game;
 
 import se.yrgo.utilities.DiceSides;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
+import javax.sound.sampled.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class DiceGame {
@@ -186,7 +185,7 @@ public class DiceGame {
                 }
                 case 2 -> {
                     slowText("[1] Normal\n[2] Special\n");
-                    if(setSoundEffect(inputInt())){
+                    if (setSoundEffect(inputInt())) {
                         slowText("Success!\n");
                     } else {
                         slowText("Invalid choice\n");
@@ -221,8 +220,8 @@ public class DiceGame {
      * <p>
      * Simple option to change dice roll sound effect.
      */
-    public boolean setSoundEffect(int choice){
-        switch (choice){
+    public boolean setSoundEffect(int choice) {
+        switch (choice) {
             case 1 -> {
                 diceRollClip = loadClip("resources/dice_roll_normal.wav");
                 return true;
@@ -429,7 +428,10 @@ public class DiceGame {
         return choice;
     }
 
-
+    /**
+     * By Sanna
+     * This method prints out text and plays a sound clip.
+     */
     public void printDiceSet() throws InterruptedException {
         slowText("Rolling...\n");
         Thread.sleep(500);
@@ -442,6 +444,10 @@ public class DiceGame {
         Thread.sleep(500);
     }
 
+    /**
+     * By Sanna
+     * This method throws all dice and sorts them.
+     */
     public void throwAllDice() {
         for (Dice dice : diceSet) {
             dice.throwDice();
@@ -485,6 +491,13 @@ public class DiceGame {
         return true;
     }
 
+    /**
+     * By Sanna
+     * This method loads an audio file. Does not work in WSL. Requires native terminal.
+     *
+     * @param path the path to the audio file.
+     * @return Returns a clip object that has the audio. Null if something goes wrong while trying to load the clip.
+     */
     public Clip loadClip(String path) {
         try {
             File soundFile = new File(path);
@@ -492,11 +505,23 @@ public class DiceGame {
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             return clip;
-        } catch (Exception ex) {
+        } catch (IllegalArgumentException ex) {
+            System.err.println("Audio playback doesn't work on WSL");
+            return null;
+        } catch (UnsupportedAudioFileException ex) {
+            System.err.println("Unsupported audio file.");
+            return null;
+        } catch (LineUnavailableException | IOException ex) {
             return null;
         }
     }
 
+    /**
+     * By Sanna
+     * This method plays audio file.
+     *
+     * @param clip audio file to be played to be played.
+     */
     public void playClip(Clip clip) {
         if (clip == null) {
             return;

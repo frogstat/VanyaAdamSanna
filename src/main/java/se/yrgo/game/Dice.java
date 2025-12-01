@@ -2,6 +2,9 @@ package se.yrgo.game;
 import se.yrgo.utilities.DiceSides;
 import java.util.Random;
 
+/**
+ * By Sanna
+ */
 public class Dice {
     private DiceSides diceSide;
     Random random = new Random();
@@ -14,6 +17,10 @@ public class Dice {
         this.diceSide = diceSide;
     }
 
+    /**
+     * By Sanna
+     * This method chooses a random number between 1-6 and sets diceSide accordingly.
+     */
     public void throwDice() {
         int result = random.nextInt(1, 7);
         switch (result) {
@@ -26,6 +33,11 @@ public class Dice {
         }
     }
 
+    /**
+     * By Sanna
+     * This method converts diceSides to a string representation fo the side of the dice.
+     * @return a string representation of the side of the dice.
+     */
     @Override
     public String toString() {
         return switch (diceSide) {
@@ -38,7 +50,11 @@ public class Dice {
         };
     }
 
-
+    /**
+     * By Sanna
+     * A getter for the member varible diceSide
+     * @return returns diceSide.
+     */
     public DiceSides getDiceSide() {
         return diceSide;
     }
