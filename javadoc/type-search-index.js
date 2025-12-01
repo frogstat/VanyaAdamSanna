@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"se.yrgo.game","l":"Dice"},{"p":"se.yrgo.game","l":"DiceGame"},{"p":"se.yrgo.utilities","l":"DiceSides"},{"p":"se.yrgo.main","l":"Main"},{"p":"se.yrgo.game","l":"Player"}];updateSearchResults();
