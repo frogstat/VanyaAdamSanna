@@ -187,9 +187,9 @@ public class DiceGame {
                 case 2 -> {
                     slowText("[1] Normal.\n[2] Special\n");
                     if(setSoundEffect(inputInt())){
-                        slowText("Success!");
+                        slowText("Success!\n");
                     } else {
-                        slowText("Invalid choice");
+                        slowText("Invalid choice\n");
                     }
                 }
                 case 3 -> {
