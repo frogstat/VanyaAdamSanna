@@ -19,7 +19,7 @@ public class DiceGame {
             DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE, DiceSides.SIX));
     final List<DiceSides> flush = new ArrayList<>(List.of(DiceSides.ONE, DiceSides.TWO,
             DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE, DiceSides.SIX));
-    private final Clip diceRollClip;
+    private Clip diceRollClip;
 
     public DiceGame() {
         for (int i = 1; i <= 6; i++) {
@@ -170,7 +170,8 @@ public class DiceGame {
         while (true) {
             slowText("""
                     [1] Change winning score
-                    [2] Back to menu
+                    [2] Change sound effect
+                    [3] Back to menu
                     """);
             choice = inputInt();
             switch (choice) {
@@ -184,6 +185,14 @@ public class DiceGame {
                     }
                 }
                 case 2 -> {
+                    slowText("[1] Normal.\n[2] Special\n");
+                    if(setSoundEffect(inputInt())){
+                        slowText("Success!");
+                    } else {
+                        slowText("Invalid choice");
+                    }
+                }
+                case 3 -> {
                     return;
                 }
             }
@@ -203,6 +212,25 @@ public class DiceGame {
         if (scoreToWin >= 500 && scoreToWin <= 5000) {
             this.scoreToWin = scoreToWin;
             return true;
+        }
+        return false;
+    }
+
+    /**
+     * By Vanya
+     * <p>
+     * Simple option to change dice roll sound effect.
+     */
+    public boolean setSoundEffect(int choice){
+        switch (choice){
+            case 1 -> {
+                diceRollClip = loadClip("resources/dice_roll_normal.wav");
+                return true;
+            }
+            case 2 -> {
+                diceRollClip = loadClip("resources/dice_roll_special.wav");
+                return true;
+            }
         }
         return false;
     }
