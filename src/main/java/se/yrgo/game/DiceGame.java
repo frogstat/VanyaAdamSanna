@@ -27,7 +27,7 @@ public class DiceGame {
         }
         scoreToWin = 1500;
 
-        String diceRollClipPath = "resources/dice_roll.wav";
+        String diceRollClipPath = "resources/dice_roll_normal.wav";
         diceRollClip = loadClip(diceRollClipPath);
     }
 
@@ -185,7 +185,7 @@ public class DiceGame {
                     }
                 }
                 case 2 -> {
-                    slowText("[1] Normal.\n[2] Special\n");
+                    slowText("[1] Normal\n[2] Special\n");
                     if(setSoundEffect(inputInt())){
                         slowText("Success!\n");
                     } else {
