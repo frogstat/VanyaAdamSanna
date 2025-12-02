@@ -9,7 +9,7 @@ import java.util.*;
 
 public class DiceGame {
 
-    private List<Dice> diceSet = new ArrayList<>();
+    private final List<Dice> diceSet = new ArrayList<>();
     private int scoreToWin;
     private final Scanner scanner = new Scanner(System.in);
     final List<DiceSides> lowStraight = new ArrayList<>(List.of(DiceSides.ONE, DiceSides.TWO,
@@ -521,7 +521,7 @@ public class DiceGame {
             clip.open(audioInputStream);
             return clip;
         } catch (IllegalArgumentException ex) {
-            System.err.println("Audio playback doesn't work on WSL");
+            System.err.println("Audio playback doesn't work.");
             return null;
         } catch (UnsupportedAudioFileException ex) {
             System.err.println("Unsupported audio file.");

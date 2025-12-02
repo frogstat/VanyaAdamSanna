@@ -3,6 +3,7 @@ package se.yrgo.game;
 import se.yrgo.utilities.DiceSides;
 import org.junit.jupiter.api.Test;
 
+import javax.sound.sampled.Clip;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -200,4 +201,16 @@ public class DiceGameTest {
         assertNull(diceGame.hasThreeOrMoreInARow(diceSet, 6));
     }
 
+    @Test
+    public void loadClipReturnsNullWhenFailedTest() {
+        DiceGame diceGame = new DiceGame();
+        Clip clip = diceGame.loadClip("fakePath/fakePath");
+        assertNull(clip);
+    }
+
+    @Test
+    public void playClipDoesNotThrowTest() {
+        DiceGame diceGame = new DiceGame();
+        assertDoesNotThrow(() -> {diceGame.playClip(null);});
+    }
 }

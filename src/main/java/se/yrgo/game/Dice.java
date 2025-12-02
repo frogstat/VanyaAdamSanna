@@ -1,5 +1,7 @@
 package se.yrgo.game;
+
 import se.yrgo.utilities.DiceSides;
+
 import java.util.Random;
 
 /**
@@ -36,6 +38,7 @@ public class Dice {
     /**
      * By Sanna
      * This method converts diceSides to a string representation fo the side of the dice.
+     *
      * @return a string representation of the side of the dice.
      */
     @Override
@@ -53,6 +56,7 @@ public class Dice {
     /**
      * By Sanna
      * A getter for the member varible diceSide
+     *
      * @return returns diceSide.
      */
     public DiceSides getDiceSide() {
