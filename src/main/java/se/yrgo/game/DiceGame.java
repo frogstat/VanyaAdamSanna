@@ -343,13 +343,13 @@ public class DiceGame {
             currentPlayer.addScore(1500);
             slowText("Flush! 1500 pts!\n");
             return; //No point checking the rest if this is true;
-        } else if (hasStraight(diceSet, lowStraight)) {
-            score += 750;
-            removeDice(lowStraight);
-            slowText("Long Straight!! 750 pts!\n");
         } else if (hasStraight(diceSet, highStraight)) {
-            score += 500;
+            score += 750;
             removeDice(highStraight);
+            slowText("Long Straight!! 750 pts!\n");
+        } else if (hasStraight(diceSet, lowStraight)) {
+            score += 500;
+            removeDice(lowStraight);
             slowText("Short Straight!! 500 pts!\n");
         } else {
             Dice dice;
