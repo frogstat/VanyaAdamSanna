@@ -41,6 +41,7 @@ public class DiceGame {
      * @throws InterruptedException Required due to slow text feature.
      */
     public void gameMenu() throws InterruptedException {
+        clearScreen();
         System.out.println("***********************************");
         System.out.println("Adam, Sanna och Vanya's DICE GAME!");
         System.out.println("***********************************");
@@ -76,6 +77,7 @@ public class DiceGame {
      * To make things fair, player 2 gets a final throw if player 1 reaches the winning score.
      */
     private void playGame() throws InterruptedException {
+        clearScreen();
         slowText("Player one! Enter your name: ");
         Player player1 = new Player(scanner.nextLine());
         slowText("Player two! Enter your name: ");
@@ -128,6 +130,7 @@ public class DiceGame {
      * A simple string to show the rules of the game.
      */
     private String getRules() {
+        clearScreen();
         return """
                 ************************
                 Rules for the Dice game:
@@ -165,6 +168,7 @@ public class DiceGame {
      * Settings menu. Currently only allows changing the score to win.
      */
     private void gameSettings() throws InterruptedException {
+        clearScreen();
         int choice;
         while (true) {
             slowText("""
@@ -192,6 +196,7 @@ public class DiceGame {
                     }
                 }
                 case 3 -> {
+                    clearScreen();
                     return;
                 }
             }
@@ -246,6 +251,16 @@ public class DiceGame {
             System.out.print(c);
             Thread.sleep(35);
         }
+    }
+
+    /**
+     * By Vanya
+     * <p>
+     * Clears the terminal screen when switching menus. Does nothing in IDE terminals.
+     */
+    private void clearScreen(){
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 
     /**
