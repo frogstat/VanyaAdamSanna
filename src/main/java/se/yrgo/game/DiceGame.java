@@ -182,17 +182,17 @@ public class DiceGame {
                     slowText("Min 500, max 5000. Current winning score: " + scoreToWin + "\n");
                     slowText("Enter new winning score: ");
                     if (setScoreToWin(inputInt())) {
-                        slowText("Changed score to win to " + scoreToWin + "\n");
+                        slowText("Changed winning score to " + scoreToWin + "\n");
                     } else {
                         slowText("Invalid score\n");
                     }
                 }
                 case 2 -> {
-                    slowText("[1] Normal\n[2] Special\n");
+                    slowText("[1] Normal (default)\n[2] Special\n");
                     if (setSoundEffect(inputInt())) {
                         slowText("Success!\n");
                     } else {
-                        slowText("Invalid choice\n");
+                        slowText("Invalid choice.\n");
                     }
                 }
                 case 3 -> {
