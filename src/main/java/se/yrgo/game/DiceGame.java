@@ -472,6 +472,9 @@ public class DiceGame {
 
     /**
      * By Adam
+     * A rethrow method that lets player choose if they wish to rethrow die/dices
+     * @return true if player chooses to rethrow die/dices, and false if player chooses not
+     * to rethrow die/dices
      */
     public boolean rethrow() throws InterruptedException {
         slowText("Choose which dice to rethrow (1-6). Type '0' when done.\n");
