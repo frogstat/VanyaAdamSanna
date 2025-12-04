@@ -1,6 +1,6 @@
 package se.yrgo.game;
 
-import se.yrgo.utilities.DiceSides;
+import se.yrgo.utilities.*;
 
 import javax.sound.sampled.*;
 import java.io.File;
@@ -12,12 +12,6 @@ public class DiceGame {
     private final List<Dice> diceSet = new ArrayList<>();
     private int scoreToWin;
     private final Scanner scanner = new Scanner(System.in);
-    final List<DiceSides> lowStraight = new ArrayList<>(List.of(DiceSides.ONE, DiceSides.TWO,
-            DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE));
-    final List<DiceSides> highStraight = new ArrayList<>(List.of(DiceSides.TWO,
-            DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE, DiceSides.SIX));
-    final List<DiceSides> flush = new ArrayList<>(List.of(DiceSides.ONE, DiceSides.TWO,
-            DiceSides.THREE, DiceSides.FOUR, DiceSides.FIVE, DiceSides.SIX));
     private Clip diceRollClip;
 
     public DiceGame() {
@@ -41,7 +35,7 @@ public class DiceGame {
      * @throws InterruptedException Required due to slow text feature.
      */
     public void gameMenu() throws InterruptedException {
-        clearScreen();
+        DiceGameLogic.clearScreen();
         System.out.println("***********************************");
         System.out.println("Adam, Sanna och Vanya's DICE GAME!");
         System.out.println("***********************************");
@@ -49,7 +43,7 @@ public class DiceGame {
         int choice;
         while (true) {
             choice = 0;
-            slowText("""
+            DiceGameLogic.slowText("""
                     [1] Play Game
                     [2] Rules
                     [3] Options
@@ -60,7 +54,7 @@ public class DiceGame {
             }
             switch (choice) {
                 case 1 -> playGame();
-                case 2 -> slowText(getRules());
+                case 2 -> DiceGameLogic.slowText(getRules());
                 case 3 -> gameSettings();
                 case 4 -> {
                     return;
@@ -77,29 +71,29 @@ public class DiceGame {
      * To make things fair, player 2 gets a final throw if player 1 reaches the winning score.
      */
     private void playGame() throws InterruptedException {
-        clearScreen();
-        slowText("Player one! Enter your name: ");
+        DiceGameLogic.clearScreen();
+        DiceGameLogic.slowText("Player one! Enter your name: ");
         Player player1 = new Player(scanner.nextLine());
-        slowText("Player two! Enter your name: ");
+        DiceGameLogic.slowText("Player two! Enter your name: ");
         Player player2 = new Player(scanner.nextLine());
 
-        slowText(player1.getName() + " VS " + player2.getName() + "\n");
-        slowText("It's a race to " + scoreToWin + "!\n");
+        DiceGameLogic.slowText(player1.getName() + " VS " + player2.getName() + "\n");
+        DiceGameLogic.slowText("It's a race to " + scoreToWin + "!\n");
         Player currentPlayer = player1;
         boolean isLastStand = false;
 
         while (player2.getScore() < scoreToWin) {
-            slowText("**********************************\n");
+            DiceGameLogic.slowText("**********************************\n");
             if (player1.getScore() >= scoreToWin) {
-                slowText("LAST STAND! " + player2.getName() + " has one last chance to beat " + player1.getName() + "'s score!\n");
+                DiceGameLogic.slowText("LAST STAND! " + player2.getName() + " has one last chance to beat " + player1.getName() + "'s score!\n");
                 isLastStand = true;
             }
-            slowText(player1 + "\n");
-            slowText(player2 + "\n");
-            slowText(currentPlayer.getName() + "'s turn! Type 'roll' to throw your dice!\n");
+            DiceGameLogic.slowText(player1 + "\n");
+            DiceGameLogic.slowText(player2 + "\n");
+            DiceGameLogic.slowText(currentPlayer.getName() + "'s turn! Type 'roll' to throw your dice!\n");
             String answer = scanner.nextLine();
             while (!answer.equalsIgnoreCase("roll")) {
-                slowText("Please type roll: ");
+                DiceGameLogic.slowText("Please type roll: ");
                 answer = scanner.nextLine();
             }
 
@@ -108,20 +102,20 @@ public class DiceGame {
             if (rethrow()) {
                 printDiceSet();
             }
-            checkResult(currentPlayer);
+            DiceGameLogic.checkResult(currentPlayer, diceSet);
             if (isLastStand) {
                 break;
             }
             currentPlayer = currentPlayer == player1 ? player2 : player1;
         }
         if (player1.getScore() == player2.getScore()) {
-            slowText("It's a tie!\n");
+            DiceGameLogic.slowText("It's a tie!\n");
         } else {
             Player winner = player1.getScore() > player2.getScore() ? player1 : player2;
-            slowText(winner.getName() + " wins!\n");
+            DiceGameLogic.slowText(winner.getName() + " wins!\n");
         }
         Thread.sleep(1000);
-        slowText("**********************************\n");
+        DiceGameLogic.slowText("**********************************\n");
     }
 
     /**
@@ -130,7 +124,7 @@ public class DiceGame {
      * A simple string to show the rules of the game.
      */
     private String getRules() {
-        clearScreen();
+        DiceGameLogic.clearScreen();
         return """
                 ************************
                 Rules for the Dice game:
@@ -168,10 +162,10 @@ public class DiceGame {
      * Settings menu. Currently only allows changing the score to win.
      */
     private void gameSettings() throws InterruptedException {
-        clearScreen();
+        DiceGameLogic.clearScreen();
         int choice;
         while (true) {
-            slowText("""
+            DiceGameLogic.slowText("""
                     [1] Change winning score
                     [2] Change dice throw sound effect
                     [3] Back to menu
@@ -179,24 +173,24 @@ public class DiceGame {
             choice = inputInt();
             switch (choice) {
                 case 1 -> {
-                    slowText("Min 500, max 5000. Current winning score: " + scoreToWin + "\n");
-                    slowText("Enter new winning score: ");
+                    DiceGameLogic.slowText("Min 500, max 5000. Current winning score: " + scoreToWin + "\n");
+                    DiceGameLogic.slowText("Enter new winning score: ");
                     if (setScoreToWin(inputInt())) {
-                        slowText("Changed winning score to " + scoreToWin + "\n");
+                        DiceGameLogic.slowText("Changed winning score to " + scoreToWin + "\n");
                     } else {
-                        slowText("Invalid score\n");
+                        DiceGameLogic.slowText("Invalid score\n");
                     }
                 }
                 case 2 -> {
-                    slowText("[1] Normal (default)\n[2] Special\n");
+                    DiceGameLogic.slowText("[1] Normal (default)\n[2] Special\n");
                     if (setSoundEffect(inputInt())) {
-                        slowText("Success!\n");
+                        DiceGameLogic.slowText("Success!\n");
                     } else {
-                        slowText("Invalid choice.\n");
+                        DiceGameLogic.slowText("Invalid choice.\n");
                     }
                 }
                 case 3 -> {
-                    clearScreen();
+                    DiceGameLogic.clearScreen();
                     return;
                 }
             }
@@ -239,188 +233,14 @@ public class DiceGame {
         return false;
     }
 
-    /**
-     * By Vanya
-     * <p>
-     * Takes a string and prints it letter by letter for prettier output.
-     *
-     * @param text The string to be printed.
-     */
-    private void slowText(String text) throws InterruptedException {
-        for (char c : text.toCharArray()) {
-            System.out.print(c);
-            Thread.sleep(35);
-        }
-    }
 
-    /**
-     * By Vanya
-     * <p>
-     * Clears the terminal screen when switching menus. Does nothing in IDE terminals.
-     */
-    private void clearScreen(){
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
 
-    /**
-     * By Vanya
-     * <p>
-     * Checks if the diceSet contains a Short Straight, Long Straight, or a Flush.
-     *
-     * @param sidesToLookFor a list of DiceSides to look for.
-     * @return true if all the sides in sidesToLookFor are in diceSet, otherwise false.
-     */
-    public boolean hasStraight(List<Dice> diceSet, List<DiceSides> sidesToLookFor) {
-        for (DiceSides diceSide : sidesToLookFor) {
-            if (diceSet.stream().noneMatch(d -> d.getDiceSide() == diceSide)) {
-                return false;
-            }
-        }
-        return true;
-    }
 
-    /**
-     * By Vanya
-     * <p>
-     * Analyzes diceSet and checks if it contains X-in-a-row.
-     *
-     * @param target What to look for. 3 checks for 3-in-a-row, 4 checks for 4-in-a-row etc
-     * @return Returns the dice that has the X-in-a-row. Otherwise, returns null.
-     */
-    public Dice hasThreeOrMoreInARow(List<Dice> diceSet, int target) {
-        if (target < 3) {
-            throw new IllegalArgumentException("target must be 3 or more.");
-        }
-        int amount;
 
-        for (DiceSides side : DiceSides.values()) {
-            amount = 0;
-            for (Dice die : diceSet) {
-                if (die.getDiceSide() == side) {
-                    amount++;
-                }
-                if (amount == target) {
-                    return die;
-                }
-            }
-        }
-        return null;
-    }
 
-    /**
-     * By Vanya
-     * <p>
-     * Takes a list of DiceSides, and removes all dice in diceSet that contain that side.
-     *
-     * @param diceToRemove A list that contains the sides to remove.
-     */
-    private void removeDice(List<DiceSides> diceToRemove) {
-        for (DiceSides diceSideToRemove : diceToRemove) {
-            for (int i = 0; i < 6; i++) {
-                if (diceSet.get(i).getDiceSide() == diceSideToRemove) {
-                    diceSet.remove(i);
-                    break;
-                }
-            }
-        }
-    }
 
-    /**
-     * By Vanya
-     * <p>
-     * Checks the result of the player's throw and awards points accordingly.
-     * Once a die has contributed to award a point, it is removed from the list so it cannot award more points.
-     * <p>
-     * Example: If you get ONE-TWO-THREE-FOUR-FIVE-ONE, you will get 600 points for a short straight + a ONE.
-     * Even though you got 2 ONES, you only get points for the ONE that wasn't part of the short straight.
-     *
-     * @param currentPlayer the player who threw the dice. This player earns the points.
-     */
-    private void checkResult(Player currentPlayer) throws InterruptedException {
-        int score = 0;
-        if (hasStraight(diceSet, flush)) {
-            currentPlayer.addScore(1500);
-            slowText("Flush! 1500 pts!\n");
-            return; //No point checking the rest if this is true;
-        } else if (hasStraight(diceSet, highStraight)) {
-            score += 750;
-            removeDice(highStraight);
-            slowText("Long Straight!! 750 pts!\n");
-        } else if (hasStraight(diceSet, lowStraight)) {
-            score += 500;
-            removeDice(lowStraight);
-            slowText("Short Straight!! 500 pts!\n");
-        } else {
-            Dice dice;
-            for (int i = 6; i >= 3; i--) {
-                int scoreMultiplier = 0;
-                switch (i) {
-                    case 6 -> scoreMultiplier = 2 * 2 * 2;
-                    case 5 -> scoreMultiplier = 2 * 2;
-                    case 4 -> scoreMultiplier = 2;
-                    case 3 -> scoreMultiplier = 1;
-                }
-                if ((dice = hasThreeOrMoreInARow(diceSet, i)) != null) {
-                    int baseMultiplier = dice.getDiceSide() == DiceSides.ONE ? 1000 : 100;
-                    score += dice.getDiceSide().getValue() * baseMultiplier * scoreMultiplier;
-                    slowText(i + " in a row! " + dice.getDiceSide().getValue() * baseMultiplier * scoreMultiplier + " pts!\n");
-                    Dice finalDice1 = dice;
-                    diceSet.removeIf((d) -> d.getDiceSide() == finalDice1.getDiceSide());
-                    //Since you can have 2 three-in-a-rows, it checks one more time.
-                    if (i == 3) {
-                        if ((dice = hasThreeOrMoreInARow(diceSet, i)) != null) {
-                            score += dice.getDiceSide().getValue() * baseMultiplier * scoreMultiplier;
-                            slowText("Another 3 in a row! " + dice.getDiceSide().getValue() * baseMultiplier * scoreMultiplier + " pts!\n");
-                            Dice finalDice2 = dice;
-                            diceSet.removeIf((d) -> d.getDiceSide() == finalDice2.getDiceSide());
-                        }
-                    }
-                    break;
-                }
-            }
-        }
 
-        int amountOfOnes = 0;
-        int amountOfFives = 0;
-        for (Dice die : diceSet) {
-            if (die.getDiceSide() == DiceSides.ONE) {
-                amountOfOnes++;
-                score += 100;
-            } else if (die.getDiceSide() == DiceSides.FIVE) {
-                amountOfFives++;
-                score += 50;
-            }
-        }
-        //If you have more than 2 ones or fives, the above in-a-row functions will apply instead.
-        switch (amountOfOnes) {
-            case 1 -> slowText("ONE! 100 pts!\n");
-            case 2 -> slowText("2 ONES! 200 pts!\n");
-        }
-        switch (amountOfFives) {
-            case 1 -> slowText("FIVE! 50 pts!\n");
-            case 2 -> slowText("2 FIVES! 100 pts!\n");
-        }
 
-        resetDiceSet();
-
-        slowText(currentPlayer.getName() + " got " + score + " points!\n");
-        currentPlayer.addScore(score);
-
-    }
-
-    /**
-     * By Vanya
-     * <p>
-     * This method resets diceSet in preparation of the next round.
-     * Since CheckResult() removes dice, this is needed.
-     */
-    private void resetDiceSet() {
-        diceSet.clear();
-        for (int i = 1; i <= 6; i++) {
-            diceSet.add(new Dice());
-        }
-    }
 
     /**
      * By Vanya
@@ -448,7 +268,7 @@ public class DiceGame {
      * This method prints out text and plays a sound clip.
      */
     public void printDiceSet() throws InterruptedException {
-        slowText("Rolling...\n");
+        DiceGameLogic.slowText("Rolling...\n");
         Thread.sleep(500);
         playClip(diceRollClip);
         for (Dice dice : diceSet) {
@@ -477,7 +297,7 @@ public class DiceGame {
      * to rethrow die/dices
      */
     public boolean rethrow() throws InterruptedException {
-        slowText("Choose which dice to rethrow (1-6). Type '0' when done.\n");
+        DiceGameLogic.slowText("Choose which dice to rethrow (1-6). Type '0' when done.\n");
 
         List<Dice> diceToRethrow = new ArrayList<>();
         while (true) {
@@ -496,13 +316,13 @@ public class DiceGame {
             Dice dieToRethrow = diceSet.get(choice);
             if (diceToRethrow.contains(dieToRethrow)) {
                 diceToRethrow.remove(dieToRethrow);
-                slowText("Removed " + dieToRethrow + " from rethrow list\n");
+                DiceGameLogic.slowText("Removed " + dieToRethrow + " from rethrow list\n");
             } else {
                 diceToRethrow.add(dieToRethrow);
-                slowText("Added " + dieToRethrow + " to rethrow list\n");
+                DiceGameLogic.slowText("Added " + dieToRethrow + " to rethrow list\n");
             }
         }
-        slowText("Rethrow: ");
+        DiceGameLogic.slowText("Rethrow: ");
         for (Dice dieToRethrow : diceToRethrow) {
             dieToRethrow.throwDice();
         }
