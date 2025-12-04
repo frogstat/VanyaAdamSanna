@@ -173,7 +173,7 @@ public class DiceGame {
         while (true) {
             slowText("""
                     [1] Change winning score
-                    [2] Change sound effect
+                    [2] Change dice throw sound effect
                     [3] Back to menu
                     """);
             choice = inputInt();
