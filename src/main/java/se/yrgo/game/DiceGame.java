@@ -121,7 +121,7 @@ public class DiceGame {
             slowText(winner.getName() + " wins!\n");
         }
         Thread.sleep(1000);
-        System.out.println("**********************************");
+        slowText("**********************************\n");
     }
 
     /**
