@@ -5,7 +5,7 @@ import se.yrgo.utilities.DiceSides;
 import java.util.Random;
 
 /**
- * By Sanna
+ * This class represents a six-sided die.
  */
 public class Dice {
     private DiceSides diceSide;
@@ -20,11 +20,19 @@ public class Dice {
     }
 
     /**
-     * By Sanna
-     * This method chooses a random number between 1-6 and sets diceSide accordingly.
+     * This method rolls a die by generating a random number between 1-6 and updates diceSides based on the result.
      */
     public void throwDice() {
         int result = random.nextInt(1, 7);
+        setDiceSideFromThrowDice(result);
+    }
+
+    /**
+     * This method sets diceSide based on the result of a die roll.
+     *
+     * @param result an int between 1-6 representing a die roll.
+     */
+    public void setDiceSideFromThrowDice(int result) {
         switch (result) {
             case 1 -> diceSide = DiceSides.ONE;
             case 2 -> diceSide = DiceSides.TWO;
@@ -36,8 +44,8 @@ public class Dice {
     }
 
     /**
-     * By Sanna
-     * This method converts diceSides to a string representation fo the side of the dice.
+     * This method converts diceSides to a string representation of the side of the dice.
+     * In this case, a string represents a image of a side of a die.
      *
      * @return a string representation of the side of the dice.
      */
@@ -54,8 +62,7 @@ public class Dice {
     }
 
     /**
-     * By Sanna
-     * A getter for the member varible diceSide
+     * A getter for the member variable diceSide
      *
      * @return returns diceSide.
      */

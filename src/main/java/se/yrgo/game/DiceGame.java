@@ -233,15 +233,6 @@ public class DiceGame {
         return false;
     }
 
-
-
-
-
-
-
-
-
-
     /**
      * By Vanya
      * <p>
@@ -265,7 +256,10 @@ public class DiceGame {
 
     /**
      * By Sanna
-     * This method prints out text and plays a sound clip.
+     * This method displays the set of dice with a rolling "animation".
+     * The method also plays an audio clip.
+     *
+     * @throws InterruptedException if the thread sleep is interrupted.
      */
     public void printDiceSet() throws InterruptedException {
         DiceGameLogic.slowText("Rolling...\n");
@@ -358,7 +352,7 @@ public class DiceGame {
      * By Sanna
      * This method plays audio file.
      *
-     * @param clip audio file to be played to be played.
+     * @param clip audio file to be played.
      */
     public void playClip(Clip clip) {
         if (clip == null) {
