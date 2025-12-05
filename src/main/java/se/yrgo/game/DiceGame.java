@@ -161,7 +161,7 @@ public class DiceGame {
      * <p>
      * Settings menu. Currently only allows changing the score to win.
      */
-    private void gameSettings() throws InterruptedException {
+    private void gameSettings() {
         DiceGameLogic.clearScreen();
         int choice;
         while (true) {
@@ -290,7 +290,7 @@ public class DiceGame {
      * @return true if player chooses to rethrow die/dices, and false if player chooses not
      * to rethrow die/dices
      */
-    public boolean rethrow() throws InterruptedException {
+    public boolean rethrow() {
         DiceGameLogic.slowText("Choose which dice to rethrow (1-6). Type '0' when done.\n");
 
         List<Dice> diceToRethrow = new ArrayList<>();

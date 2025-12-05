@@ -26,7 +26,7 @@ public class DiceGameLogic {
      *
      * @param currentPlayer the player who threw the dice. This player earns the points.
      */
-    public static void checkResult(Player currentPlayer, List<Dice> diceSet) throws InterruptedException {
+    public static void checkResult(Player currentPlayer, List<Dice> diceSet) {
         int score = 0;
         if (hasStraight(diceSet, flush)) {
             currentPlayer.addScore(1500);
@@ -192,10 +192,14 @@ public class DiceGameLogic {
      *
      * @param text The string to be printed.
      */
-    public static void slowText(String text) throws InterruptedException {
-        for (char c : text.toCharArray()) {
-            System.out.print(c);
-            Thread.sleep(35);
+    public static void slowText(String text){
+        try{
+            for (char c : text.toCharArray()) {
+                System.out.print(c);
+                Thread.sleep(35);
+            }
+        } catch (InterruptedException ex){
+            Thread.currentThread().interrupt();
         }
     }
 
