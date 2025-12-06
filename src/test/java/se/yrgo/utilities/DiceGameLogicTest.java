@@ -158,4 +158,46 @@ public class DiceGameLogicTest {
         diceSet.add(new Dice(DiceSides.TWO));
         assertNull(DiceGameLogic.hasThreeOrMoreInARow(diceSet, 6));
     }
+
+    @Test
+    public void hasThreeOrMoreInARowEmptyList(){
+        List<Dice> diceSet = new ArrayList<>();
+        assertThrows(IllegalArgumentException.class,
+                () -> DiceGameLogic.hasThreeOrMoreInARow(diceSet,6));
+    }
+
+    @Test
+    public void hasThreeOrMoreInARowNotEmptyList(){
+        List<Dice> diceSet = new ArrayList<>();
+        diceSet.add(new Dice(DiceSides.TWO));
+        assertDoesNotThrow(() -> DiceGameLogic.hasThreeOrMoreInARow(diceSet,6));
+    }
+
+    @Test
+    public void hasThreeOrMoreInARowTargetTooLow(){
+        List<Dice> diceSet = new ArrayList<>();
+        diceSet.add(new Dice(DiceSides.TWO));
+        diceSet.add(new Dice(DiceSides.THREE));
+        diceSet.add(new Dice(DiceSides.TWO));
+        diceSet.add(new Dice(DiceSides.TWO));
+        diceSet.add(new Dice(DiceSides.TWO));
+        diceSet.add(new Dice(DiceSides.TWO));
+        assertThrows(IllegalArgumentException.class,
+                () -> DiceGameLogic.hasThreeOrMoreInARow(diceSet,2));
+    }
+
+    @Test
+    public void hasStraightEmptyList(){
+        List<Dice> diceSet = new ArrayList<>();
+        assertThrows(IllegalArgumentException.class,
+                () -> DiceGameLogic.hasStraight(diceSet,DiceGameLogic.flush));
+    }
+
+    @Test
+    public void hasStraightNotEmptyList(){
+        List<Dice> diceSet = new ArrayList<>();
+        diceSet.add(new Dice(DiceSides.TWO));
+        assertDoesNotThrow(() -> DiceGameLogic.hasStraight(diceSet,DiceGameLogic.flush));
+    }
+
 }

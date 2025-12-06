@@ -114,12 +114,16 @@ public class DiceGameLogic {
     /**
      * By Vanya
      * <p>
-     * Checks if the diceSet contains a Short Straight, Long Straight, or a Flush.
+     * Checks if a list of dice contains a Short Straight, Long Straight, or a Flush.
      *
      * @param sidesToLookFor a list of DiceSides to look for.
      * @return true if all the sides in sidesToLookFor are in diceSet, otherwise false.
      */
     public static boolean hasStraight(List<Dice> diceSet, List<DiceSides> sidesToLookFor) {
+        if (diceSet.isEmpty()) {
+            throw new IllegalArgumentException("Dice set cannot be empty");
+        }
+
         for (DiceSides diceSide : sidesToLookFor) {
             if (diceSet.stream().noneMatch(d -> d.getDiceSide() == diceSide)) {
                 return false;
@@ -137,7 +141,9 @@ public class DiceGameLogic {
      * @return Returns the dice that has the X-in-a-row. Otherwise, returns null.
      */
     public static Dice hasThreeOrMoreInARow(List<Dice> diceSet, int target) {
-        if (target < 3) {
+        if (diceSet.isEmpty()) {
+            throw new IllegalArgumentException("Dice set cannot be empty");
+        } else if (target < 3) {
             throw new IllegalArgumentException("target must be 3 or more.");
         }
         int amount;
@@ -180,7 +186,7 @@ public class DiceGameLogic {
      * <p>
      * Clears the terminal screen when switching menus. Does nothing in IDE terminals.
      */
-    public static void clearScreen(){
+    public static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
@@ -192,17 +198,16 @@ public class DiceGameLogic {
      *
      * @param text The string to be printed.
      */
-    public static void slowText(String text){
-        try{
+    public static void slowText(String text) {
+        try {
             for (char c : text.toCharArray()) {
                 System.out.print(c);
                 Thread.sleep(35);
             }
-        } catch (InterruptedException ex){
+        } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
     }
-
 
 
 }
