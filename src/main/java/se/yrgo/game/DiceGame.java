@@ -7,6 +7,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * The primary class for the dice game.
+ * By Adam, Sanna and Vanya.
+ * Each method has a javadoc that shows who made which method.
+ */
 public class DiceGame {
 
     private final List<Dice> diceSet = new ArrayList<>();
@@ -287,6 +292,7 @@ public class DiceGame {
     /**
      * By Adam
      * A rethrow method that lets player choose if they wish to rethrow die/dices
+     *
      * @return true if player chooses to rethrow die/dices, and false if player chooses not
      * to rethrow die/dices
      */

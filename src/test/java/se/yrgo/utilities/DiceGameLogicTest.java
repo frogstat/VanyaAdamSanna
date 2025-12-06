@@ -2,7 +2,9 @@ package se.yrgo.utilities;
 
 import org.junit.jupiter.api.Test;
 import se.yrgo.game.Dice;
+
 import java.util.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -160,21 +162,21 @@ public class DiceGameLogicTest {
     }
 
     @Test
-    public void hasThreeOrMoreInARowEmptyList(){
+    public void hasThreeOrMoreInARowEmptyList() {
         List<Dice> diceSet = new ArrayList<>();
         assertThrows(IllegalArgumentException.class,
-                () -> DiceGameLogic.hasThreeOrMoreInARow(diceSet,6));
+                () -> DiceGameLogic.hasThreeOrMoreInARow(diceSet, 6));
     }
 
     @Test
-    public void hasThreeOrMoreInARowNotEmptyList(){
+    public void hasThreeOrMoreInARowNotEmptyList() {
         List<Dice> diceSet = new ArrayList<>();
         diceSet.add(new Dice(DiceSides.TWO));
-        assertDoesNotThrow(() -> DiceGameLogic.hasThreeOrMoreInARow(diceSet,6));
+        assertDoesNotThrow(() -> DiceGameLogic.hasThreeOrMoreInARow(diceSet, 6));
     }
 
     @Test
-    public void hasThreeOrMoreInARowTargetTooLow(){
+    public void hasThreeOrMoreInARowTargetTooLow() {
         List<Dice> diceSet = new ArrayList<>();
         diceSet.add(new Dice(DiceSides.TWO));
         diceSet.add(new Dice(DiceSides.THREE));
@@ -183,21 +185,21 @@ public class DiceGameLogicTest {
         diceSet.add(new Dice(DiceSides.TWO));
         diceSet.add(new Dice(DiceSides.TWO));
         assertThrows(IllegalArgumentException.class,
-                () -> DiceGameLogic.hasThreeOrMoreInARow(diceSet,2));
+                () -> DiceGameLogic.hasThreeOrMoreInARow(diceSet, 2));
     }
 
     @Test
-    public void hasStraightEmptyList(){
+    public void hasStraightEmptyList() {
         List<Dice> diceSet = new ArrayList<>();
         assertThrows(IllegalArgumentException.class,
-                () -> DiceGameLogic.hasStraight(diceSet,DiceGameLogic.flush));
+                () -> DiceGameLogic.hasStraight(diceSet, DiceGameLogic.flush));
     }
 
     @Test
-    public void hasStraightNotEmptyList(){
+    public void hasStraightNotEmptyList() {
         List<Dice> diceSet = new ArrayList<>();
         diceSet.add(new Dice(DiceSides.TWO));
-        assertDoesNotThrow(() -> DiceGameLogic.hasStraight(diceSet,DiceGameLogic.flush));
+        assertDoesNotThrow(() -> DiceGameLogic.hasStraight(diceSet, DiceGameLogic.flush));
     }
 
 }
