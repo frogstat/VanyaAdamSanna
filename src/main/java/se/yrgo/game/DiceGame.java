@@ -30,12 +30,12 @@ public class DiceGame {
     }
 
     /**
-     * By Vanya
-     * <p>
      * Starting menu for the Dice game.
      * The game always starts here.
      * <p>
      * Choose whether to play, see rules, go to options menu or exit.
+     * <p>
+     * By Vanya
      *
      * @throws InterruptedException Required due to slow text feature.
      */
@@ -69,11 +69,11 @@ public class DiceGame {
     }
 
     /**
-     * By Vanya
-     * <p>
      * The actual game code itself.
      * Loops until a player reaches the score goal.
      * To make things fair, player 2 gets a final throw if player 1 reaches the winning score.
+     * <p>
+     * By Vanya
      */
     private void playGame() throws InterruptedException {
         DiceGameLogic.clearScreen();
@@ -124,9 +124,9 @@ public class DiceGame {
     }
 
     /**
-     * By Vanya
-     * <p>
      * A simple string to show the rules of the game.
+     * <p>
+     * By Vanya
      */
     private String getRules() {
         DiceGameLogic.clearScreen();
@@ -162,9 +162,9 @@ public class DiceGame {
     }
 
     /**
-     * By Vanya
-     * <p>
      * Settings menu. Currently only allows changing the score to win.
+     * <p>
+     * By Vanya
      */
     private void gameSettings() {
         DiceGameLogic.clearScreen();
@@ -203,10 +203,10 @@ public class DiceGame {
     }
 
     /**
-     * By Vanya
-     * <p>
      * Allows the player to change the score to win.
      * The allowed range is 500 to 5000 points.
+     * <p>
+     * By Vanya
      *
      * @param scoreToWin the new score goal.
      * @return true if the new score is allowed. False if not.
@@ -220,9 +220,9 @@ public class DiceGame {
     }
 
     /**
-     * By Vanya
-     * <p>
      * Simple option to change dice roll sound effect.
+     * <p>
+     * By Vanya
      */
     public boolean setSoundEffect(int choice) {
         switch (choice) {
@@ -239,9 +239,9 @@ public class DiceGame {
     }
 
     /**
-     * By Vanya
-     * <p>
      * This is a simple wrapper for scanner.nextInt() that handles input mismatch.
+     * <p>
+     * By Vanya
      *
      * @return the valid input the user made.
      */

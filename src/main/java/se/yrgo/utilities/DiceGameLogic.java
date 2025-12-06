@@ -26,16 +26,16 @@ public class DiceGameLogic {
 
 
     /**
-     * By Vanya
-     * <p>
      * Checks the result of the player's throw and awards points accordingly.
      * Once a die has contributed to award a point, it is removed from the list so it cannot award more points.
      * <p>
      * Example: If you get ONE-TWO-THREE-FOUR-FIVE-ONE, you will get 600 points for a short straight + a ONE.
      * Even though you got 2 ONES, you only get points for the ONE that wasn't part of the short straight.
+     * <p>
+     * By Vanya
      *
      * @param currentPlayer the player who threw the dice. This player earns the points.
-     * @param diceSet The list of dice to be checked.
+     * @param diceSet       The list of dice to be checked.
      */
     public static void checkResult(Player currentPlayer, List<Dice> diceSet) {
         int score = 0;
@@ -110,10 +110,11 @@ public class DiceGameLogic {
     }
 
     /**
-     * By Vanya
-     * <p>
-     * This method resets diceSet in preparation of the next round.
+     * Resets diceSet in preparation of the next round.
      * Since CheckResult() removes dice, this is needed.
+     * <p>
+     * By Vanya
+     *
      * @param diceSet The list of dice to be checked.
      */
     public static void resetDiceSet(List<Dice> diceSet) {
@@ -124,12 +125,12 @@ public class DiceGameLogic {
     }
 
     /**
-     * By Vanya
-     * <p>
      * Checks if a list of dice contains a Short Straight, Long Straight, or a Flush.
+     * <p>
+     * By Vanya
      *
      * @param sidesToLookFor a list of DiceSides to look for.
-     * @param diceSet The list of dice to be checked.
+     * @param diceSet        The list of dice to be checked.
      * @return true if all the sides in sidesToLookFor are in diceSet, otherwise false.
      */
     public static boolean hasStraight(List<Dice> diceSet, List<DiceSides> sidesToLookFor) {
@@ -146,11 +147,12 @@ public class DiceGameLogic {
     }
 
     /**
-     * By Vanya
-     * <p>
      * Analyzes diceSet and checks if it contains X-in-a-row.
+     * <p>
+     * By Vanya
+     *
      * @param diceSet The list of dice to be checked.
-     * @param target What to look for. 3 checks for 3-in-a-row, 4 checks for 4-in-a-row etc
+     * @param target  What to look for. 3 checks for 3-in-a-row, 4 checks for 4-in-a-row etc
      * @return Returns the dice that has the X-in-a-row. Otherwise, returns null.
      */
     public static Dice hasThreeOrMoreInARow(List<Dice> diceSet, int target) {
@@ -176,12 +178,12 @@ public class DiceGameLogic {
     }
 
     /**
-     * By Vanya
-     * <p>
      * Takes a list of DiceSides, and removes all dice in diceSet that contain that side.
+     * <p>
+     * By Vanya
      *
      * @param diceToRemove A list that contains the sides to remove.
-     * @param diceSet The list of dice to be checked.
+     * @param diceSet      The list of dice to be checked.
      */
     public static void removeDice(List<DiceSides> diceToRemove, List<Dice> diceSet) {
         for (DiceSides diceSideToRemove : diceToRemove) {
@@ -196,9 +198,9 @@ public class DiceGameLogic {
 
 
     /**
-     * By Vanya
-     * <p>
      * Clears the terminal screen when switching menus. Does nothing in IDE terminals.
+     * <p>
+     * By Vanya
      */
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
@@ -206,9 +208,9 @@ public class DiceGameLogic {
     }
 
     /**
-     * By Vanya
-     * <p>
      * Takes a string and prints it letter by letter for prettier output.
+     * <p>
+     * By Vanya
      *
      * @param text The string to be printed.
      */
@@ -222,6 +224,4 @@ public class DiceGameLogic {
             Thread.currentThread().interrupt();
         }
     }
-
-
 }
