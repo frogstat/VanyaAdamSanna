@@ -35,6 +35,7 @@ public class DiceGameLogic {
      * Even though you got 2 ONES, you only get points for the ONE that wasn't part of the short straight.
      *
      * @param currentPlayer the player who threw the dice. This player earns the points.
+     * @param diceSet The list of dice to be checked.
      */
     public static void checkResult(Player currentPlayer, List<Dice> diceSet) {
         int score = 0;
@@ -113,6 +114,7 @@ public class DiceGameLogic {
      * <p>
      * This method resets diceSet in preparation of the next round.
      * Since CheckResult() removes dice, this is needed.
+     * @param diceSet The list of dice to be checked.
      */
     public static void resetDiceSet(List<Dice> diceSet) {
         diceSet.clear();
@@ -127,6 +129,7 @@ public class DiceGameLogic {
      * Checks if a list of dice contains a Short Straight, Long Straight, or a Flush.
      *
      * @param sidesToLookFor a list of DiceSides to look for.
+     * @param diceSet The list of dice to be checked.
      * @return true if all the sides in sidesToLookFor are in diceSet, otherwise false.
      */
     public static boolean hasStraight(List<Dice> diceSet, List<DiceSides> sidesToLookFor) {
@@ -146,7 +149,7 @@ public class DiceGameLogic {
      * By Vanya
      * <p>
      * Analyzes diceSet and checks if it contains X-in-a-row.
-     *
+     * @param diceSet The list of dice to be checked.
      * @param target What to look for. 3 checks for 3-in-a-row, 4 checks for 4-in-a-row etc
      * @return Returns the dice that has the X-in-a-row. Otherwise, returns null.
      */
@@ -178,6 +181,7 @@ public class DiceGameLogic {
      * Takes a list of DiceSides, and removes all dice in diceSet that contain that side.
      *
      * @param diceToRemove A list that contains the sides to remove.
+     * @param diceSet The list of dice to be checked.
      */
     public static void removeDice(List<DiceSides> diceToRemove, List<Dice> diceSet) {
         for (DiceSides diceSideToRemove : diceToRemove) {
