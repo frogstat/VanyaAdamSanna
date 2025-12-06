@@ -1,7 +1,7 @@
 package se.yrgo.game;
 /**
+ * Player class for the user to have their unique name and track their score.
  * By Adam
- * A player class for the user to have their unique name and track their score.
  */
 public class Player {
     private String name;

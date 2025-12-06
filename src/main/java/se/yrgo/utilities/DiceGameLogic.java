@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * By Vanya
- * <p>
- * This class handles logic for the dice game.
+ * Handles logic like result checking for the dice game.
  * It checks the results of your dice throws and gives points.
  * All the fields and methods are static, as there aren't meant to be multiple instances of this class.
+ * <p>
+ * By Vanya
  */
 public class DiceGameLogic {
 
