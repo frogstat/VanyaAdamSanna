@@ -4,6 +4,8 @@ Detta projekt är vår försök att återskapa tärningspelet Farkle från ett d
 
 Vissa skillnader finns, men grundreglerna är samma.
 
+Använder MAVEN.
+
 Instruktioner
 ---
 
